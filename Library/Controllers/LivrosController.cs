@@ -3,6 +3,7 @@ using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,7 +47,8 @@ namespace Library.Controllers
         // GET: Livros/Create
         public IActionResult Create()
         {
-            //ViewData["EditoraId"] = new SelectList(_context.Set<Editora>(), "Id", "Nome");
+            ViewData["LivroAssunto"] = new SelectList(_context.Assunto, "Id", "Nome");
+
             return View();
         }
 
@@ -55,10 +57,46 @@ namespace Library.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, [Bind("Nome")] Autor autor )
         {
+            var autorBd = (from c in _context.Autor
+                          where c.Nome.Equals(autor.Nome)
+                          select c).FirstOrDefault();
+
+            Autor a1 = new Autor();
+
+            if (autorBd == null)
+            {
+                a1.Nome = autor.Nome;
+                _context.Autor.Add(a1);
+                await _context.SaveChangesAsync();
+            } else
+            {
+                a1 = autorBd;
+            }
+
+            int assuntoId = Convert.ToInt32(assunto.Nome);
+            var assuntoSelecionado = (from c in _context.Assunto
+                                     where c.Id.Equals(assuntoId)
+                                     select c).FirstOrDefault();
+            LivroAutor livroAutor = new LivroAutor();
+            livroAutor.Autor = a1;
+            livroAutor.Livro = livro;
+            _context.LivroAutor.Add(livroAutor);
+            await _context.SaveChangesAsync();
+
+            LivroAssunto livroAssunto = new LivroAssunto();
+            livroAssunto.Assunto = assuntoSelecionado;
+            livroAssunto.Livro = livro;
+            _context.LivroAssunto.Add(livroAssunto);
+            await _context.SaveChangesAsync();
+
+            livro.LivroAssunto.Add(livroAssunto);
+            livro.LivroAutor.Add(livroAutor);
+
             if (ModelState.IsValid)
             {
+
                 var editora = (from c in _context.Editora
                                where c.Nome.Equals(livro.Editora.Nome)
                                select c.Nome).FirstOrDefault();
@@ -87,9 +125,8 @@ namespace Library.Controllers
 
                     return RedirectToAction(nameof(Index));
                 }
-
             }
-            //ViewData["EditoraId"] = new SelectList(_context.Set<Editora>(), "Id", "Nome", livro.EditoraId);
+            ViewData["LivroAssunto"] = new SelectList(_context.Assunto, "Id", "Nome");
             return View(livro);
         }
 

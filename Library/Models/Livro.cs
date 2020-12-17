@@ -14,7 +14,9 @@ namespace Library.Models
         public virtual Editora Editora { get; set; }
         [Display(Name="Editora")]
         public int EditoraId { get; set; }
+        [Display(Name ="Autor")]
         public virtual List<LivroAutor> LivroAutor { get; set; }
+        [Display(Name = "Assunto")]
         public virtual List<LivroAssunto> LivroAssunto { get; set; }
 
 

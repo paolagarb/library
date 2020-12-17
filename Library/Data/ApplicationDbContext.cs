@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Library.Models;
 
 namespace Library.Data
 {
@@ -14,5 +13,7 @@ namespace Library.Data
         public DbSet<Library.Models.Autor> Autor { get; set; }
         public DbSet<Library.Models.Editora> Editora { get; set; }
         public DbSet<Library.Models.Assunto> Assunto { get; set; }
+        public DbSet<Library.Models.LivroAssunto> LivroAssunto { get; set; }
+        public DbSet<Library.Models.LivroAutor> LivroAutor { get; set; }
     }
 }
