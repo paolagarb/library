@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,6 +60,11 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, [Bind("Nome")] Autor autor)
         {
+            //var x = Request.Form["listaAutores"];
+ 
+ 
+
+
             var livroId = (from c in _context.Livro
                            where c.Titulo.Equals(livro.Titulo)
                            select c.Id).FirstOrDefault();
@@ -75,22 +81,27 @@ namespace Library.Controllers
                 return View();
             }
 
-            var autorBd = (from c in _context.Autor
-                           where c.Nome.Equals(autor.Nome)
-                           select c).FirstOrDefault();
-
             Autor autor1 = new Autor();
 
-            if (autorBd == null)
-            {
-                autor1.Nome = autor.Nome;
-                _context.Autor.Add(autor1);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                autor1 = autorBd;
-            }
+            //foreach (var autorList in autor)
+            //{
+                var autorBd = (from c in _context.Autor
+                               where c.Nome.Equals(autor.Nome)
+                               select c).FirstOrDefault();
+
+                if (autorBd == null)
+                {
+                    autor1.Nome = autor.Nome;
+                    _context.Autor.Add(autor1);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    autor1 = autorBd;
+                }
+            //}
+   
+
 
             int assuntoId = Convert.ToInt32(assunto.Nome);
             var assuntoSelecionado = (from c in _context.Assunto

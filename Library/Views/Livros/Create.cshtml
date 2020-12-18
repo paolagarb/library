@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Adicionar";
     var jaExiste = ViewBag.JaExiste;
+
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -50,7 +51,7 @@
                     <ul id="autorLista">
                     </ul>
                 </div>
-z'            </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Adicionar" class="btn btn-primary" />
             </div>
@@ -65,15 +66,21 @@ z'            </div>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 <script>
+    let lista = []
+
     function adicionarAutor() {
         let autorAdicionado = document.getElementById('autorAdicionado').value
         let autorLista = document.getElementById('autorLista')
         let item = document.createElement('li')
 
         item.textContent = autorAdicionado
-        console.log(item)
-        autorLista.appendChild(item)
 
-        autorAdicionado.value = ''
+        let check = document.createElement('input')
+        check.setAttribute('type', "checkbox")
+        check.setAttribute('checked', "checked")
+        check.setAttribute('name', "listaAutores")
+        item.appendChild(check)
+
+        autorLista.appendChild(item)
     }
 </script>
