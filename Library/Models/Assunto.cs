@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models
 {
@@ -8,7 +7,7 @@ namespace Library.Models
         public int Id { get; set; }
         [Display(Name="Assunto")]
         public string Nome { get; set; }
-        public virtual List<LivroAssunto> LivroAssunto { get; set; }
+
         public Assunto()
         {
 

@@ -59,20 +59,37 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, [Bind("Nome")] Autor autor )
         {
+
+            var livroId = (from c in _context.Livro
+                          where c.Titulo.Equals(livro.Titulo)
+                          select c.Id).FirstOrDefault();
+            var livroEdicao = (from c in _context.Livro
+                          where c.Titulo.Equals(livro.Titulo)
+                          select c.Edicao).FirstOrDefault();
+            var livroEditora = (from c in _context.Livro
+                          where c.Titulo.Equals(livro.Titulo)
+                          select c.Editora).FirstOrDefault();
+
+            if (livroId != 0 && livroEdicao != 0 && livroEditora != null)
+            {
+                ViewData["JaExiste"] = "Esse livro já está cadastrado no sistema!";
+                return View();
+            }
+
             var autorBd = (from c in _context.Autor
                           where c.Nome.Equals(autor.Nome)
                           select c).FirstOrDefault();
 
-            Autor a1 = new Autor();
+            Autor autor1 = new Autor();
 
             if (autorBd == null)
             {
-                a1.Nome = autor.Nome;
-                _context.Autor.Add(a1);
+                autor1.Nome = autor.Nome;
+                _context.Autor.Add(autor1);
                 await _context.SaveChangesAsync();
             } else
             {
-                a1 = autorBd;
+                autor1 = autorBd;
             }
 
             int assuntoId = Convert.ToInt32(assunto.Nome);
@@ -80,10 +97,11 @@ namespace Library.Controllers
                                      where c.Id.Equals(assuntoId)
                                      select c).FirstOrDefault();
             LivroAutor livroAutor = new LivroAutor();
-            livroAutor.Autor = a1;
+            livroAutor.Autor = autor1;
             livroAutor.Livro = livro;
             _context.LivroAutor.Add(livroAutor);
             await _context.SaveChangesAsync();
+
 
             LivroAssunto livroAssunto = new LivroAssunto();
             livroAssunto.Assunto = assuntoSelecionado;
@@ -96,7 +114,6 @@ namespace Library.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var editora = (from c in _context.Editora
                                where c.Nome.Equals(livro.Editora.Nome)
                                select c.Nome).FirstOrDefault();

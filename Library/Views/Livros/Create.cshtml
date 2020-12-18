@@ -2,10 +2,11 @@
 
 @{
     ViewData["Title"] = "Adicionar";
+    var jaExiste = ViewBag.JaExiste;
 }
 
 <h1>@ViewData["Title"]</h1>
-
+<h5 class="text-danger">@jaExiste</h5>
 <hr />
 <div class="row">
     <div class="col-md-4">
