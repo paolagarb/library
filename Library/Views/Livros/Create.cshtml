@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>    
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Livro.Titulo" class="control-label"></label>
                 <input asp-for="Livro.Titulo" class="form-control" />
@@ -34,23 +34,29 @@
             </div>
             <div class="form-group">
                 <label asp-for="Assunto.Nome" class="control-label"></label>
-                <select asp-for="Assunto.Nome" class="form-control" asp-items="ViewBag.LivroAssunto"></select>
+                <div class="d-flex flex-row">
+                    <select asp-for="Assunto.Nome" class="form-control" asp-items="ViewBag.LivroAssunto"></select>
+                    <input type="button" onclick="AdicionarAssunto()" id="assunto" value="+" class="btn btn-success" />
+                </div>
                 <a href="/Assuntos/Create" class="btn btn-primary">Novo Assunto</a>
-
             </div>
-            @*<a asp-controller="Assuntos" asp-action="Create" class="btn btn-primary">+</a>*@
             <div class="form-group">
                 <label asp-for="Autor.Nome" class="control-label"></label>
-                <input asp-for="Autor.Nome" class="form-control" />
-                <span asp-validation-for="Autor.Nome" class="text-danger"></span>
-            </div>
+                <div class="d-flex flex-row">
+                    <input asp-for="Autor.Nome" class="form-control" id="autorAdicionado" />
+                    <input type="button" onclick="adicionarAutor()" value="+" class="btn btn-success" />
+                </div>
+                <div>
+                    <ul id="autorLista">
+                    </ul>
+                </div>
+z'            </div>
             <div class="form-group">
                 <input type="submit" value="Adicionar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Voltar</a>
 </div>
@@ -58,3 +64,16 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    function adicionarAutor() {
+        let autorAdicionado = document.getElementById('autorAdicionado').value
+        let autorLista = document.getElementById('autorLista')
+        let item = document.createElement('li')
+
+        item.textContent = autorAdicionado
+        console.log(item)
+        autorLista.appendChild(item)
+
+        autorAdicionado.value = ''
+    }
+</script>

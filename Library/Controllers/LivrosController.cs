@@ -111,6 +111,7 @@ namespace Library.Controllers
                     livro.EditoraId = editoraId;
                     _context.Add(livro);
                     await _context.SaveChangesAsync();
+
                     LivroAutor livroAutor = new LivroAutor();
                     livroAutor.Autor = autor1;
                     livroAutor.Livro = livro;
@@ -134,6 +135,7 @@ namespace Library.Controllers
                         Nome = livro.Editora.Nome
                     });
                     await _context.SaveChangesAsync();
+
                     var editoraId = (from c in _context.Editora
                                      where c.Nome.Equals(livro.Editora.Nome)
                                      select c.Id).FirstOrDefault();
