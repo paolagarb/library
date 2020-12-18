@@ -70,7 +70,7 @@ namespace Library.Controllers
                           where c.Titulo.Equals(livro.Titulo)
                           select c.Editora).FirstOrDefault();
 
-            if (livroId != 0 && livroEdicao != 0 && livroEditora != null)
+            if (livroId != 0 && livroEdicao == livro.Edicao && livroEditora == livro.Editora)
             {
                 ViewData["JaExiste"] = "Esse livro já está cadastrado no sistema!";
                 return View();
