@@ -1,4 +1,6 @@
-﻿namespace Library.Models.ViewModels
+﻿using System.Collections.Generic;
+
+namespace Library.Models.ViewModels
 {
     public class LivroAutorAssunto
     {

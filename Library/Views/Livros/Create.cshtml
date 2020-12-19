@@ -72,15 +72,14 @@
         let autorAdicionado = document.getElementById('autorAdicionado').value
         let autorLista = document.getElementById('autorLista')
         let item = document.createElement('li')
-
         item.textContent = autorAdicionado
 
         let check = document.createElement('input')
         check.setAttribute('type', "checkbox")
         check.setAttribute('checked', "checked")
         check.setAttribute('name', "listaAutores")
+        check.setAttribute('value', autorAdicionado)
         item.appendChild(check)
-
         autorLista.appendChild(item)
     }
 </script>
