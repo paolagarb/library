@@ -60,9 +60,7 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores)
         {
-            //var list = Request.Form["listaAutores"];
-
-
+            
             var livroId = (from c in _context.Livro
                            where c.Titulo.Equals(livro.Titulo)
                            select c.Id).FirstOrDefault();
@@ -79,11 +77,12 @@ namespace Library.Controllers
                 return View();
             }
 
-            Autor autor1 = new Autor();
+           
             List<Autor> listAutorLivro = new List<Autor>();
 
             foreach (var autorList in listaAutores)
             {
+                Autor autor1 = new Autor();
                 var autorBd = (from c in _context.Autor
                                where c.Nome.Equals(autorList)
                                select c).FirstOrDefault();
@@ -97,7 +96,7 @@ namespace Library.Controllers
                 }
                 else
                 {
-                    autor1 = autorBd; 
+                    //autor1 = autorBd; 
                     listAutorLivro.Add(autor1);
                 }
             }
@@ -130,16 +129,20 @@ namespace Library.Controllers
                         await _context.SaveChangesAsync();
 
                         livro.LivroAutor.Add(livroAutor);
-
                     }
+
                     LivroAssunto livroAssunto = new LivroAssunto();
                         livroAssunto.Assunto = assuntoSelecionado;
                         livroAssunto.Livro = livro;
                         _context.LivroAssunto.Add(livroAssunto);
                         await _context.SaveChangesAsync();
 
-                        livro.LivroAssunto.Add(livroAssunto);
-                        return RedirectToAction(nameof(Index));
+                        livro.LivroAssunto.Add(livroAssunto); 
+
+                    _context.Update(livro);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -153,6 +156,7 @@ namespace Library.Controllers
                                      where c.Nome.Equals(livro.Editora.Nome)
                                      select c.Id).FirstOrDefault();
                     livro.EditoraId = editoraId;
+
                     _context.Add(livro);
                     await _context.SaveChangesAsync();
 
@@ -166,6 +170,7 @@ namespace Library.Controllers
                         
                         livro.LivroAutor.Add(livroAutor);
                     }
+
                     LivroAssunto livroAssunto = new LivroAssunto();
                     livroAssunto.Assunto = assuntoSelecionado;
                     livroAssunto.Livro = livro;
@@ -173,6 +178,10 @@ namespace Library.Controllers
                     await _context.SaveChangesAsync();
 
                     livro.LivroAssunto.Add(livroAssunto);
+
+                    _context.Update(livro);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
             }
