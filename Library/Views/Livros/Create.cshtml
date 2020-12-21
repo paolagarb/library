@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Adicionar" class="btn btn-primary" />
+                <input type="submit" value="Adicionar" class="btn btn-primary" onclick="validandoAutor()"/>
             </div>
         </form>
     </div>
@@ -66,20 +66,41 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 <script>
-    let lista = []
+    var lista = []
+    var umAutor = true
 
     function adicionarAutor() {
-        let autorAdicionado = document.getElementById('autorAdicionado').value
-        let autorLista = document.getElementById('autorLista')
-        let item = document.createElement('li')
+        var autorAdicionado = document.getElementById('autorAdicionado').value
+        var autorLista = document.getElementById('autorLista')
+        var item = document.createElement('li')
         item.textContent = autorAdicionado
 
-        let check = document.createElement('input')
+        var check = document.createElement('input')
         check.setAttribute('type', "checkbox")
         check.setAttribute('checked', "checked")
         check.setAttribute('name', "listaAutores")
         check.setAttribute('value', autorAdicionado)
         item.appendChild(check)
         autorLista.appendChild(item)
+
+        umAutor = false
+    }
+
+    function validandoAutor() {
+        if (umAutor) {
+            var autorAdicionado = document.getElementById('autorAdicionado').value
+            var autorLista = document.getElementById('autorLista')
+            var item = document.createElement('li')
+            item.textContent = autorAdicionado
+
+            var check = document.createElement('input')
+            check.setAttribute('type', "hidden")
+            check.setAttribute('checked', "checked")
+            check.setAttribute('name', "listaAutores")
+            check.setAttribute('value', autorAdicionado)
+            //item.appendChild(check)
+            autorLista.appendChild(check)
+
+        } 
     }
 </script>

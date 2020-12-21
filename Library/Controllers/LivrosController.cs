@@ -144,7 +144,7 @@ namespace Library.Controllers
                 }
                 else
                 {
-                    listAutorLivro.Add(autor1);
+                    listAutorLivro.Add(autorBd);
                 }
             }
 
