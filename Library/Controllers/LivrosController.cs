@@ -1,5 +1,6 @@
 ﻿using Library.Data;
 using Library.Models;
+using Library.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,55 @@ namespace Library.Controllers
         // GET: Livros
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Livro.Include(l => l.Editora);
-            return View(await applicationDbContext.ToListAsync());
+            //    var applicationDbContext = _context.Livro.Include(l => l.Editora);
+            //    return View(await applicationDbContext.ToListAsync());
+
+            List<Livros> Livro = new List<Livros>();
+
+
+
+            var id = (from c in _context.Livro
+                      select c.Id).ToList();
+
+            foreach (var ids in id)
+            {
+                var titulo = (from livro in _context.Livro
+                              where livro.Id == ids
+                              select livro.Titulo).FirstOrDefault();
+
+                var edicao = (from livro in _context.Livro
+                              where livro.Id == ids
+                              select livro.Edicao).FirstOrDefault();
+
+                var ano = (from livro in _context.Livro
+                           where livro.Id == ids
+                           select livro.Ano).FirstOrDefault();
+
+                var editora = (from livro in _context.Livro
+                               where livro.Id == ids
+                               select livro.Editora.Nome).FirstOrDefault();
+
+                var autores = (from autor in _context.Autor
+                               join livroAutor in _context.LivroAutor
+                               on autor.Id equals livroAutor.AutorId
+                               join livro in _context.Livro
+                               on livroAutor.LivroId equals livro.Id
+                               where livro.Id == ids
+                               select autor.Nome).ToList();
+
+                Livro.Add(new Livros
+                {
+                    Id = ids,
+                    Titulo = titulo,
+                    Edicao = edicao,
+                    Ano = ano,
+                    Editora = editora,
+                    Autores = autores
+                });
+            }
+
+            ViewBag.Livro = Livro;
+            return View(Livro);
         }
 
         // GET: Livros/Details/5
@@ -96,7 +144,6 @@ namespace Library.Controllers
                 }
                 else
                 {
-                    //autor1 = autorBd; 
                     listAutorLivro.Add(autor1);
                 }
             }
