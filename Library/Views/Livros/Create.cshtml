@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Adicionar" class="btn btn-primary" onclick="validandoAutor()"/>
+                <input type="submit" value="Adicionar" class="btn btn-primary" onclick="validando()"/>
             </div>
         </form>
     </div>
@@ -71,6 +71,7 @@
 }
 <script>
     var umAutor = true
+    var umAssunto = true
 
     function adicionarAutor() {
         let autorAdicionado = document.getElementById('autorAdicionado').value
@@ -89,7 +90,7 @@
         umAutor = false
     }
 
-    function validandoAutor() {
+    function validando() {
         if (umAutor) {
             let autorAdicionado = document.getElementById('autorAdicionado').value
             let autorLista = document.getElementById('autorLista')
@@ -103,6 +104,20 @@
             check.setAttribute('value', autorAdicionado)
             autorLista.appendChild(check)
         } 
+
+        if (umAssunto) {
+            let assunto = document.getElementById('assuntoAdicionado').value
+            let assuntoLista = document.getElementById('assuntoLista')
+            let item = document.createElement('li')
+            item.textContent = assunto
+
+            let check = document.createElement('input')
+            check.setAttribute('type', "hidden")
+            check.setAttribute('checked', "checked")
+            check.setAttribute('name', "listaAssuntos")
+            check.setAttribute('value', assunto)
+            assuntoLista.appendChild(check)
+        }
     }
 
     function adicionarAssunto() {
@@ -130,5 +145,6 @@
         item.appendChild(check)
         assuntoLista.appendChild(item)
 
+        umAssunto = false
     }
 </script>
