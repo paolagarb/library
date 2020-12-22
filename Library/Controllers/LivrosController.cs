@@ -23,12 +23,7 @@ namespace Library.Controllers
         // GET: Livros
         public async Task<IActionResult> Index()
         {
-            //    var applicationDbContext = _context.Livro.Include(l => l.Editora);
-            //    return View(await applicationDbContext.ToListAsync());
-
             List<Livros> Livro = new List<Livros>();
-
-
 
             var id = (from c in _context.Livro
                       select c.Id).ToList();
@@ -106,7 +101,7 @@ namespace Library.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores, List<string> listaAssuntos)
         {
             
             var livroId = (from c in _context.Livro
@@ -124,7 +119,6 @@ namespace Library.Controllers
                 ViewData["JaExiste"] = "Esse livro já está cadastrado no sistema!";
                 return View();
             }
-
            
             List<Autor> listAutorLivro = new List<Autor>();
 
@@ -147,11 +141,6 @@ namespace Library.Controllers
                     listAutorLivro.Add(autorBd);
                 }
             }
-
-            int assuntoId = Convert.ToInt32(assunto.Nome);
-            var assuntoSelecionado = (from c in _context.Assunto
-                                      where c.Id.Equals(assuntoId)
-                                      select c).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -178,14 +167,21 @@ namespace Library.Controllers
                         livro.LivroAutor.Add(livroAutor);
                     }
 
-                    LivroAssunto livroAssunto = new LivroAssunto();
+                    foreach (var assuntos in listaAssuntos)
+                    {
+                        LivroAssunto livroAssunto = new LivroAssunto();
+                        int assuntoId = Convert.ToInt32(assuntos);
+                        var assuntoSelecionado = (from c in _context.Assunto
+                                                  where c.Id.Equals(assuntoId)
+                                                  select c).FirstOrDefault();
                         livroAssunto.Assunto = assuntoSelecionado;
                         livroAssunto.Livro = livro;
                         _context.LivroAssunto.Add(livroAssunto);
                         await _context.SaveChangesAsync();
 
-                        livro.LivroAssunto.Add(livroAssunto); 
-
+                        livro.LivroAssunto.Add(livroAssunto);
+                    }
+                        
                     _context.Update(livro);
                     await _context.SaveChangesAsync();
 
@@ -218,13 +214,21 @@ namespace Library.Controllers
                         livro.LivroAutor.Add(livroAutor);
                     }
 
-                    LivroAssunto livroAssunto = new LivroAssunto();
-                    livroAssunto.Assunto = assuntoSelecionado;
-                    livroAssunto.Livro = livro;
-                    _context.LivroAssunto.Add(livroAssunto);
-                    await _context.SaveChangesAsync();
+                    foreach (var assuntos in listaAssuntos)
+                    {
+                        LivroAssunto livroAssunto = new LivroAssunto();
+                        int assuntoId = Convert.ToInt32(assuntos);
+                        var assuntoSelecionado = (from c in _context.Assunto
+                                                  where c.Id.Equals(assuntoId)
+                                                  select c).FirstOrDefault();
+                        
+                        livroAssunto.Assunto = assuntoSelecionado;
+                        livroAssunto.Livro = livro;
+                        _context.LivroAssunto.Add(livroAssunto);
+                        await _context.SaveChangesAsync();
 
-                    livro.LivroAssunto.Add(livroAssunto);
+                        livro.LivroAssunto.Add(livroAssunto);
+                    }
 
                     _context.Update(livro);
                     await _context.SaveChangesAsync();

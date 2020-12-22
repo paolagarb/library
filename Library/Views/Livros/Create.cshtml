@@ -36,10 +36,14 @@
             <div class="form-group">
                 <label asp-for="Assunto.Nome" class="control-label"></label>
                 <div class="d-flex flex-row">
-                    <select asp-for="Assunto.Nome" class="form-control" asp-items="ViewBag.LivroAssunto"></select>
-                    <input type="button" onclick="AdicionarAssunto()" id="assunto" value="+" class="btn btn-success" />
+                    <select asp-for="Assunto.Nome" class="form-control" asp-items="ViewBag.LivroAssunto" id="assuntoAdicionado"></select>
+                    <input type="button" onclick="adicionarAssunto()" value="+" class="btn btn-success" />
                 </div>
                 <a href="/Assuntos/Create" class="btn btn-primary">Novo Assunto</a>
+                <div>
+                    <ul id="assuntoLista">
+                    </ul>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Autor.Nome" class="control-label"></label>
@@ -66,16 +70,15 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 <script>
-    var lista = []
     var umAutor = true
 
     function adicionarAutor() {
-        var autorAdicionado = document.getElementById('autorAdicionado').value
-        var autorLista = document.getElementById('autorLista')
-        var item = document.createElement('li')
+        let autorAdicionado = document.getElementById('autorAdicionado').value
+        let autorLista = document.getElementById('autorLista')
+        let item = document.createElement('li')
         item.textContent = autorAdicionado
 
-        var check = document.createElement('input')
+        let check = document.createElement('input')
         check.setAttribute('type', "checkbox")
         check.setAttribute('checked', "checked")
         check.setAttribute('name', "listaAutores")
@@ -88,19 +91,44 @@
 
     function validandoAutor() {
         if (umAutor) {
-            var autorAdicionado = document.getElementById('autorAdicionado').value
-            var autorLista = document.getElementById('autorLista')
-            var item = document.createElement('li')
+            let autorAdicionado = document.getElementById('autorAdicionado').value
+            let autorLista = document.getElementById('autorLista')
+            let item = document.createElement('li')
             item.textContent = autorAdicionado
 
-            var check = document.createElement('input')
+            let check = document.createElement('input')
             check.setAttribute('type', "hidden")
             check.setAttribute('checked', "checked")
             check.setAttribute('name', "listaAutores")
             check.setAttribute('value', autorAdicionado)
-            //item.appendChild(check)
             autorLista.appendChild(check)
-
         } 
+    }
+
+    function adicionarAssunto() {
+        let assuntoAdicionado = document.getElementById('assuntoAdicionado').textContent
+        let assuntoNum = document.getElementById('assuntoAdicionado').value
+
+        let assuntoLista = document.getElementById('assuntoLista')
+        let item = document.createElement('li')
+
+        var assuntos = assuntoAdicionado.split(" ")
+
+        for (var i = 0; i <= assuntos.length; i++) {
+            switch (assuntoNum) {
+                case i:
+                    item.innerHTML = assuntos[i+1]
+                    break;
+            }
+        }
+
+        let check = document.createElement('input')
+        check.setAttribute('type', "checkbox")
+        check.setAttribute('checked', "checked")
+        check.setAttribute('name', "listaAssuntos")
+        check.setAttribute('value', assuntoNum)
+        item.appendChild(check)
+        assuntoLista.appendChild(item)
+
     }
 </script>
