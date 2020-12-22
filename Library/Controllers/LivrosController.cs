@@ -54,6 +54,14 @@ namespace Library.Controllers
                                where livro.Id == ids
                                select autor.Nome).ToList();
 
+                var assuntos = (from assunto in _context.Assunto
+                               join LivroAssunto in _context.LivroAssunto
+                               on assunto.Id equals LivroAssunto.AssuntoId
+                               join livro in _context.Livro
+                               on LivroAssunto.LivroId equals livro.Id
+                               where livro.Id == ids
+                               select assunto.Nome).ToList();
+
                 Livro.Add(new Livros
                 {
                     Id = ids,
@@ -61,7 +69,8 @@ namespace Library.Controllers
                     Edicao = edicao,
                     Ano = ano,
                     Editora = editora,
-                    Autores = autores
+                    Autores = autores,
+                    Assuntos = assuntos
                 });
             }
 

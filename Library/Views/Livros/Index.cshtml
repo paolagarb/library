@@ -26,6 +26,9 @@
             <th>
                 Autor
             </th>
+            <th>
+                Assunto
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -49,6 +52,13 @@
                     @foreach (var autores in item.Autores)
                     {
                         @autores
+                        ;
+                    }
+                </td>
+                <td>
+                    @foreach (var assuntos in item.Assuntos)
+                    {
+                        @assuntos
                         ;
                     }
                 </td>
