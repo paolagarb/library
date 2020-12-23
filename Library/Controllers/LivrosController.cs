@@ -55,12 +55,12 @@ namespace Library.Controllers
                                select autor.Nome).ToList();
 
                 var assuntos = (from assunto in _context.Assunto
-                               join LivroAssunto in _context.LivroAssunto
-                               on assunto.Id equals LivroAssunto.AssuntoId
-                               join livro in _context.Livro
-                               on LivroAssunto.LivroId equals livro.Id
-                               where livro.Id == ids
-                               select assunto.Nome).ToList();
+                                join LivroAssunto in _context.LivroAssunto
+                                on assunto.Id equals LivroAssunto.AssuntoId
+                                join livro in _context.Livro
+                                on LivroAssunto.LivroId equals livro.Id
+                                where livro.Id == ids
+                                select assunto.Nome).ToList();
 
                 Livro.Add(new Livros
                 {
@@ -88,48 +88,48 @@ namespace Library.Controllers
 
             List<Livros> Livro = new List<Livros>();
 
-                var titulo = (from livro in  _context.Livro
-                              where livro.Id == id
-                              select livro.Titulo).FirstOrDefault();
+            var titulo = (from livro in _context.Livro
+                          where livro.Id == id
+                          select livro.Titulo).FirstOrDefault();
 
-                var edicao = (from livro in _context.Livro
-                              where livro.Id == id
-                              select livro.Edicao).FirstOrDefault();
+            var edicao = (from livro in _context.Livro
+                          where livro.Id == id
+                          select livro.Edicao).FirstOrDefault();
 
-                var ano = (from livro in _context.Livro
+            var ano = (from livro in _context.Livro
+                       where livro.Id == id
+                       select livro.Ano).FirstOrDefault();
+
+            var editora = (from livro in _context.Livro
                            where livro.Id == id
-                           select livro.Ano).FirstOrDefault();
+                           select livro.Editora.Nome).FirstOrDefault();
 
-                var editora = (from livro in _context.Livro
-                               where livro.Id == id
-                               select livro.Editora.Nome).FirstOrDefault();
+            var autores = (from autor in _context.Autor
+                           join livroAutor in _context.LivroAutor
+                           on autor.Id equals livroAutor.AutorId
+                           join livro in _context.Livro
+                           on livroAutor.LivroId equals livro.Id
+                           where livro.Id == id
+                           select autor.Nome).ToList();
 
-                var autores = (from autor in _context.Autor
-                               join livroAutor in _context.LivroAutor
-                               on autor.Id equals livroAutor.AutorId
-                               join livro in _context.Livro
-                               on livroAutor.LivroId equals livro.Id
-                               where livro.Id == id
-                               select autor.Nome).ToList();
+            var assuntos = (from assunto in _context.Assunto
+                            join LivroAssunto in _context.LivroAssunto
+                            on assunto.Id equals LivroAssunto.AssuntoId
+                            join livro in _context.Livro
+                            on LivroAssunto.LivroId equals livro.Id
+                            where livro.Id == id
+                            select assunto.Nome).ToList();
 
-                var assuntos = (from assunto in _context.Assunto
-                                join LivroAssunto in _context.LivroAssunto
-                                on assunto.Id equals LivroAssunto.AssuntoId
-                                join livro in _context.Livro
-                                on LivroAssunto.LivroId equals livro.Id
-                                where livro.Id == id
-                                select assunto.Nome).ToList();
-
-                Livro.Add(new Livros
-                {
-                    Id = Convert.ToInt32(id),
-                    Titulo = titulo,
-                    Edicao = edicao,
-                    Ano = ano,
-                    Editora = editora,
-                    Autores = autores,
-                    Assuntos = assuntos
-                });
+            Livro.Add(new Livros
+            {
+                Id = Convert.ToInt32(id),
+                Titulo = titulo,
+                Edicao = edicao,
+                Ano = ano,
+                Editora = editora,
+                Autores = autores,
+                Assuntos = assuntos
+            });
             ViewBag.Livro = Livro;
 
             return View();
@@ -150,7 +150,7 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores, List<string> listaAssuntos)
         {
-            
+
             var livroId = (from c in _context.Livro
                            where c.Titulo.Equals(livro.Titulo)
                            select c.Id).FirstOrDefault();
@@ -166,7 +166,7 @@ namespace Library.Controllers
                 ViewData["JaExiste"] = "Esse livro já está cadastrado no sistema!";
                 return View();
             }
-           
+
             List<Autor> listAutorLivro = new List<Autor>();
 
             foreach (var autorList in listaAutores)
@@ -228,7 +228,7 @@ namespace Library.Controllers
 
                         livro.LivroAssunto.Add(livroAssunto);
                     }
-                        
+
                     _context.Update(livro);
                     await _context.SaveChangesAsync();
 
@@ -256,8 +256,8 @@ namespace Library.Controllers
                         livroAutor.Autor = autorList;
                         livroAutor.Livro = livro;
                         _context.LivroAutor.Add(livroAutor);
-                        await _context.SaveChangesAsync(); 
-                        
+                        await _context.SaveChangesAsync();
+
                         livro.LivroAutor.Add(livroAutor);
                     }
 
@@ -268,7 +268,7 @@ namespace Library.Controllers
                         var assuntoSelecionado = (from c in _context.Assunto
                                                   where c.Id.Equals(assuntoId)
                                                   select c).FirstOrDefault();
-                        
+
                         livroAssunto.Assunto = assuntoSelecionado;
                         livroAssunto.Livro = livro;
                         _context.LivroAssunto.Add(livroAssunto);
@@ -341,6 +341,16 @@ namespace Library.Controllers
                 Assuntos = assuntos
             });
 
+            var assuntosId = (from assunto in _context.Assunto
+                              join LivroAssunto in _context.LivroAssunto
+                              on assunto.Id equals LivroAssunto.AssuntoId
+                              join livro in _context.Livro
+                              on LivroAssunto.LivroId equals livro.Id
+                              where livro.Id == id
+                              select assunto.Id).ToList();
+
+            ViewBag.Assunto = new SelectList(_context.Assunto, "Id", "Nome", assuntosId);
+            ViewBag.Livro = Livro;
             return View(Livro);
         }
 
@@ -349,35 +359,112 @@ namespace Library.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Edicao,Ano,EditoraId")] Livro livro)
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Edicao,Ano,Editora,Autor,Assunto")] Livros livros)
+        public async Task<IActionResult> Edit(int id, string titulo, List<string> autores, int edicao, int ano, string editora, List<int> assuntos)
         {
-            if (id != livro.Id)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var livro = (from c in _context.Livro
+                             where c.Id == id
+                             select c).FirstOrDefault();
+
+                var tituloLivro = (from c in _context.Livro
+                                   where c.Id == id
+                                   select c.Titulo).FirstOrDefault();
+
+                if (titulo != tituloLivro)
                 {
-                    _context.Update(livro);
-                    await _context.SaveChangesAsync();
+                    livro.Titulo = titulo;
                 }
-                catch (DbUpdateConcurrencyException)
+
+                var edicaoLivro = (from c in _context.Livro
+                                   where c.Id == id
+                                   select c.Edicao).FirstOrDefault();
+
+                if (edicao != edicaoLivro)
                 {
-                    if (!LivroExists(livro.Id))
+                    livro.Edicao = edicao;
+                }
+
+                var anoLivro = (from c in _context.Livro
+                                where c.Id == id
+                                select c.Ano).FirstOrDefault();
+
+                if (ano != anoLivro)
+                {
+                    livro.Ano = ano;
+                }
+
+                var editoraLivro = (from c in _context.Livro
+                                    where c.Id == id
+                                    select c.Editora.Nome).FirstOrDefault();
+
+                if (editora != editoraLivro)
+                {
+                    var editoraNova = (from c in _context.Editora
+                                       where c.Nome == editora
+                                       select c).FirstOrDefault();
+
+                    if (editoraNova == null)
                     {
-                        return NotFound();
+                        Editora edit = new Editora();
+                        edit.Nome = editora;
+                        _context.Editora.Add(edit);
+                        await _context.SaveChangesAsync();
+
+                        livro.Editora = edit;
                     }
                     else
                     {
-                        throw;
+                        livro.Editora = editoraNova;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                _context.Livro.Update(livro);
+                await _context.SaveChangesAsync();
+
+                var livroAutor = (from c in _context.LivroAutor
+                                 where c.Livro == livro
+                                 select c).FirstOrDefault();
+                
+
+                foreach (var autor in autores)
+                {
+                    var autor1 = (from c in _context.Autor
+                                  where c.Nome == autor
+                                  select c).FirstOrDefault();
+
+                    if (autor1 == null)
+                    {
+                        Autor autor2 = new Autor();
+                        autor2.Nome = autor;
+                        _context.Autor.Add(autor2);
+                        await _context.SaveChangesAsync();
+
+                        livroAutor.Autor = autor2;
+                        _context.LivroAutor.Update(livroAutor);
+                        await _context.SaveChangesAsync();
+                    } else
+                    {
+                        if (livroAutor.Autor != autor1)
+                        {
+                            livroAutor.Autor = autor1;
+                            _context.LivroAutor.Update(livroAutor);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+
+                    //livroautor
+                }
+
+
+                    }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
             }
-            ViewData["EditoraId"] = new SelectList(_context.Set<Editora>(), "Id", "Nome", livro.EditoraId);
-            return View(livro);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Livros/Delete/5

@@ -1,7 +1,7 @@
-﻿@model List<Library.Models.ViewModels.Livros>
-
+﻿
 @{
     ViewData["Title"] = "Editar";
+    var livro = ViewBag.Livro;
 }
 <br />
 @foreach (var titulo in Model)
@@ -14,64 +14,48 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @foreach (var id in Model)
+        <form asp-action="Edit" method="post">
+            @foreach (var livros in livro)
             {
-                <input type="hidden" asp-for="@id.Id" />
+                <div class="form-group">
+                    Título <input type="text" name="titulo" value="@livros.Titulo" class="form-control" />
+                </div>
             }
-            <div class="form-group">
-                @foreach (var titulo in Model)
-                {
-                    <label asp-for="@titulo.Titulo" class="control-label"></label>
-                    <input asp-for="@titulo.Titulo" class="form-control" />
-                    <span asp-validation-for="@titulo.Titulo" class="text-danger"></span>
-                }
-            </div>
-            <div class="form-group">
-                @foreach (var edicao in Model)
-                {
-                    <label asp-for="@edicao.Edicao" class="control-label"></label>
-                    <input asp-for="@edicao.Edicao" class="form-control" />
-                    <span asp-validation-for="@edicao.Edicao" class="text-danger"></span>
-                }
-
-            </div>
-            <div class="form-group">
-                @foreach (var ano in Model)
-                {
-                    <label asp-for="@ano.Ano" class="control-label"></label>
-                    <input asp-for="@ano.Ano" class="form-control" />
-                    <span asp-validation-for="@ano.Ano" class="text-danger"></span>
-                }
-            </div>
-            <div class="form-group">
-                @foreach (var editora in Model)
-                {
-                    <label asp-for="@editora.Editora" class="control-label"></label>
-                    <input asp-for="@editora.Editora" class="form-control" />
-                    <span asp-validation-for="@editora.Editora" class="text-danger"></span>
-                }
-            </div>
-            @foreach (var livros in Model)
+            @foreach (var livros in livro)
             {
-                @foreach (var Assunto in livros.Assuntos)
+                <div class="form-group">
+                    Edição <input type="text" name="edicao" value="@livros.Edicao" class="form-control" />
+                </div>
+            }
+            @foreach (var livros in livro)
+            {
+                <div class="form-group">
+                    Ano <input type="text" name="ano" value="@livros.Ano" class="form-control" />
+                </div>
+            }
+            @foreach (var livros in livro)
+            {
+                <div class="form-group">
+                    Editora <input type="text" name="editora" value="@livros.Editora" class="form-control" />
+                </div>
+            }
+            @foreach (var livros in livro)
+            {
+                @foreach (var assunto in livros.Assuntos)
                 {
                     <div class="form-group">
-                        <label asp-for="@Assunto" class="control-label"></label>
-                        <input asp-for="@Assunto" class="form-control" />
-                        <span asp-validation-for="@Assunto" class="text-danger"></span>
+                        Assunto <br />
+
+                        @Html.DropDownList("assuntos", (SelectList)ViewBag.Assunto, new { @class = "form-control" })
                     </div>
                 }
             }
-            @foreach (var livros in Model)
+            @foreach (var livros in livro)
             {
-                @foreach (var Autor in livros.Autores)
+                @foreach (var autores in livros.Autores)
                 {
                     <div class="form-group">
-                        <label asp-for="@Autor" class="control-label"></label>
-                        <input asp-for="@Autor" class="form-control" />
-                        <span asp-validation-for="@Autor" class="text-danger"></span>
+                        Autor <input type="text" name="autores" value="@autores" class="form-control" />
                     </div>
                 }
             }
