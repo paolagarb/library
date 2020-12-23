@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Livros";
     var livro = ViewBag.Livro;
+    var pev = "; ";
+    var virg = ", ";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -51,15 +53,14 @@
                 <td>
                     @foreach (var autores in item.Autores)
                     {
-                        @autores
-                        ;
+                        @autores @pev
+
                     }
                 </td>
                 <td>
                     @foreach (var assuntos in item.Assuntos)
                     {
-                        @assuntos
-                        ;
+                        @assuntos @virg
                     }
                 </td>
                 <td>
