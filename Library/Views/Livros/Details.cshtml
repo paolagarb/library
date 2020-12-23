@@ -10,49 +10,49 @@
 }
 <br />
 
-<div>
+<div class="text-center">
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             Título
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @foreach (var titulo in livro)
             {
                 @titulo.Titulo
             }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             Edição
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @foreach (var edicao in livro)
             {
                 @edicao.Edicao
             }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             Ano
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @foreach (var ano in livro)
             {
                 @ano.Ano
             }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             Editora
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @foreach (var editora in livro)
             {
                 @editora.Editora
             }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             Autor
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @foreach (var livros in livro)
             {
                 @foreach (var autor in livros.Autores)
@@ -61,10 +61,10 @@
                 }
             }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             Assunto
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @foreach (var livros in livro)
             {
                 @foreach (var assunto in livros.Assuntos)

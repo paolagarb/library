@@ -1,47 +1,89 @@
-﻿@model Library.Models.Livro
+﻿@model List<Library.Models.ViewModels.Livros>
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
 }
+<br />
+@foreach (var titulo in Model)
+{
+    <h1 class="text-center">@titulo.Titulo</h1>
+}
+<h3 class="text-center">@ViewData["Title"]</h3>
+<br />
 
-<h1>Edit</h1>
-
-<h4>Livro</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            @foreach (var id in Model)
+            {
+                <input type="hidden" asp-for="@id.Id" />
+            }
             <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
+                @foreach (var titulo in Model)
+                {
+                    <label asp-for="@titulo.Titulo" class="control-label"></label>
+                    <input asp-for="@titulo.Titulo" class="form-control" />
+                    <span asp-validation-for="@titulo.Titulo" class="text-danger"></span>
+                }
             </div>
             <div class="form-group">
-                <label asp-for="Edicao" class="control-label"></label>
-                <input asp-for="Edicao" class="form-control" />
-                <span asp-validation-for="Edicao" class="text-danger"></span>
+                @foreach (var edicao in Model)
+                {
+                    <label asp-for="@edicao.Edicao" class="control-label"></label>
+                    <input asp-for="@edicao.Edicao" class="form-control" />
+                    <span asp-validation-for="@edicao.Edicao" class="text-danger"></span>
+                }
+
             </div>
             <div class="form-group">
-                <label asp-for="Ano" class="control-label"></label>
-                <input asp-for="Ano" class="form-control" />
-                <span asp-validation-for="Ano" class="text-danger"></span>
+                @foreach (var ano in Model)
+                {
+                    <label asp-for="@ano.Ano" class="control-label"></label>
+                    <input asp-for="@ano.Ano" class="form-control" />
+                    <span asp-validation-for="@ano.Ano" class="text-danger"></span>
+                }
             </div>
             <div class="form-group">
-                <label asp-for="EditoraId" class="control-label"></label>
-                <select asp-for="EditoraId" class="form-control" asp-items="ViewBag.EditoraId"></select>
-                <span asp-validation-for="EditoraId" class="text-danger"></span>
+                @foreach (var editora in Model)
+                {
+                    <label asp-for="@editora.Editora" class="control-label"></label>
+                    <input asp-for="@editora.Editora" class="form-control" />
+                    <span asp-validation-for="@editora.Editora" class="text-danger"></span>
+                }
             </div>
+            @foreach (var livros in Model)
+            {
+                @foreach (var Assunto in livros.Assuntos)
+                {
+                    <div class="form-group">
+                        <label asp-for="@Assunto" class="control-label"></label>
+                        <input asp-for="@Assunto" class="form-control" />
+                        <span asp-validation-for="@Assunto" class="text-danger"></span>
+                    </div>
+                }
+            }
+            @foreach (var livros in Model)
+            {
+                @foreach (var Autor in livros.Autores)
+                {
+                    <div class="form-group">
+                        <label asp-for="@Autor" class="control-label"></label>
+                        <input asp-for="@Autor" class="form-control" />
+                        <span asp-validation-for="@Autor" class="text-danger"></span>
+                    </div>
+                }
+            }
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar</a>
 </div>
 
 @section Scripts {

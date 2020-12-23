@@ -131,17 +131,8 @@ namespace Library.Controllers
                     Assuntos = assuntos
                 });
             ViewBag.Livro = Livro;
+
             return View();
-
-            //    var livro = await _context.Livro
-            //    .Include(l => l.Editora)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (livro == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(livro);
         }
 
         // GET: Livros/Create
@@ -305,13 +296,52 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var livro = await _context.Livro.FindAsync(id);
-            if (livro == null)
+            List<Livros> Livro = new List<Livros>();
+
+            var titulo = (from livro in _context.Livro
+                          where livro.Id == id
+                          select livro.Titulo).FirstOrDefault();
+
+            var edicao = (from livro in _context.Livro
+                          where livro.Id == id
+                          select livro.Edicao).FirstOrDefault();
+
+            var ano = (from livro in _context.Livro
+                       where livro.Id == id
+                       select livro.Ano).FirstOrDefault();
+
+            var editora = (from livro in _context.Livro
+                           where livro.Id == id
+                           select livro.Editora.Nome).FirstOrDefault();
+
+            var autores = (from autor in _context.Autor
+                           join livroAutor in _context.LivroAutor
+                           on autor.Id equals livroAutor.AutorId
+                           join livro in _context.Livro
+                           on livroAutor.LivroId equals livro.Id
+                           where livro.Id == id
+                           select autor.Nome).ToList();
+
+            var assuntos = (from assunto in _context.Assunto
+                            join LivroAssunto in _context.LivroAssunto
+                            on assunto.Id equals LivroAssunto.AssuntoId
+                            join livro in _context.Livro
+                            on LivroAssunto.LivroId equals livro.Id
+                            where livro.Id == id
+                            select assunto.Nome).ToList();
+
+            Livro.Add(new Livros
             {
-                return NotFound();
-            }
-            ViewData["EditoraId"] = new SelectList(_context.Set<Editora>(), "Id", "Nome", livro.EditoraId);
-            return View(livro);
+                Id = Convert.ToInt32(id),
+                Titulo = titulo,
+                Edicao = edicao,
+                Ano = ano,
+                Editora = editora,
+                Autores = autores,
+                Assuntos = assuntos
+            });
+
+            return View(Livro);
         }
 
         // POST: Livros/Edit/5
