@@ -426,8 +426,8 @@ namespace Library.Controllers
 
                 var livroAutor = (from c in _context.LivroAutor
                                  where c.Livro == livro
-                                 select c).FirstOrDefault();
-                
+                                 select c).ToList();
+                int i = 0;
 
                 foreach (var autor in autores)
                 {
@@ -442,20 +442,22 @@ namespace Library.Controllers
                         _context.Autor.Add(autor2);
                         await _context.SaveChangesAsync();
 
-                        livroAutor.Autor = autor2;
-                        _context.LivroAutor.Update(livroAutor);
+                        livroAutor[i].Autor = autor2;
+                        _context.LivroAutor.Update(livroAutor[i]);
                         await _context.SaveChangesAsync();
+
                     } else
                     {
-                        if (livroAutor.Autor != autor1)
+                        if (livroAutor[i].Autor != autor1)
                         {
-                            livroAutor.Autor = autor1;
-                            _context.LivroAutor.Update(livroAutor);
+                            livroAutor[i].Autor = autor1;
+                            _context.LivroAutor.Update(livroAutor[i]);
                             await _context.SaveChangesAsync();
+
                         }
                     }
 
-                    //livroautor
+                    i++;
                 }
 
 
