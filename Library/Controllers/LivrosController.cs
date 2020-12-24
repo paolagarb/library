@@ -349,7 +349,12 @@ namespace Library.Controllers
                               where livro.Id == id
                               select assunto.Id).ToList();
 
-            ViewBag.Assunto = new SelectList(_context.Assunto, "Id", "Nome", assuntosId);
+            List<SelectList> listas = new List<SelectList>();
+            for (int i =0; i< assuntosId.Count; i++)
+            {
+                listas.Add(new SelectList(_context.Assunto, "Id", "Nome", assuntosId[i]));
+            }
+            ViewBag.Assunto = listas; //new SelectList(_context.Assunto, "Id", "Nome", assuntosId);
             ViewBag.Livro = Livro;
             return View(Livro);
         }
@@ -425,8 +430,8 @@ namespace Library.Controllers
                 await _context.SaveChangesAsync();
 
                 var livroAutor = (from c in _context.LivroAutor
-                                 where c.Livro == livro
-                                 select c).ToList();
+                                  where c.Livro == livro
+                                  select c).ToList();
                 int i = 0;
 
                 foreach (var autor in autores)
@@ -445,23 +450,21 @@ namespace Library.Controllers
                         livroAutor[i].Autor = autor2;
                         _context.LivroAutor.Update(livroAutor[i]);
                         await _context.SaveChangesAsync();
-
-                    } else
+                    }
+                    else
                     {
                         if (livroAutor[i].Autor != autor1)
                         {
                             livroAutor[i].Autor = autor1;
                             _context.LivroAutor.Update(livroAutor[i]);
                             await _context.SaveChangesAsync();
-
                         }
                     }
-
                     i++;
                 }
 
 
-                    }
+            }
             catch (DbUpdateConcurrencyException)
             {
                 return NotFound();

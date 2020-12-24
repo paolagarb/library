@@ -3,6 +3,8 @@
     ViewData["Title"] = "Editar";
     var livro = ViewBag.Livro;
 }
+
+}
 <br />
 @foreach (var titulo in Model)
 {
@@ -39,17 +41,15 @@
                     Editora <input type="text" name="editora" value="@livros.Editora" class="form-control" />
                 </div>
             }
-            @foreach (var livros in livro)
-            {
-                @foreach (var assunto in livros.Assuntos)
-                {
-                    <div class="form-group">
-                        Assunto <br />
 
-                        @Html.DropDownList("assuntos", (SelectList)ViewBag.Assunto, new { @class = "form-control" })
-                    </div>
-                }
+            @foreach (var assunto in ViewBag.Assunto)
+            {
+                <div class="form-group">
+                    Assunto <br />
+                    @Html.DropDownList("assuntos", (SelectList)assunto, new { @class = "form-control" })
+                </div>
             }
+
             @foreach (var livros in livro)
             {
                 @foreach (var autores in livros.Autores)
