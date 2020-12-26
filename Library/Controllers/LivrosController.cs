@@ -364,10 +364,8 @@ namespace Library.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Edicao,Ano,Editora,Autor,Assunto")] Livros livros)
         public async Task<IActionResult> Edit(int id, string titulo, List<string> autores, int edicao, int ano, string editora, List<int> assuntos)
         {
-
             try
             {
                 var livro = (from c in _context.Livro
@@ -461,6 +459,31 @@ namespace Library.Controllers
                         }
                     }
                     i++;
+                }
+
+                var livroAssunto = (from c in _context.LivroAssunto
+                                    where c.Livro == livro
+                                    select c).ToList();
+
+                var livroAssuntoId = (from c in _context.LivroAssunto
+                                    where c.Livro == livro
+                                    select c.AssuntoId).ToList();
+                int cont = 0;
+
+                foreach (var assunto in assuntos)
+                {
+                    var assuntoAtual = (from c in _context.Assunto
+                                        where c.Id == assunto
+                                        select c).FirstOrDefault();
+
+                    if (livroAssuntoId[cont] != assunto)
+                    {
+                        livroAssunto[cont].Assunto = assuntoAtual;
+
+                        _context.LivroAssunto.Update(livroAssunto[cont]);
+                        await _context.SaveChangesAsync();
+                    }
+                    cont++;
                 }
 
 
