@@ -463,8 +463,19 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var livro = await _context.Livro.FindAsync(id);
+            var livro = (from c in _context.Livro
+                         where c.Id == id
+                         select c).FirstOrDefault();
+            var livroAssunto = (from c in _context.LivroAssunto
+                                where c.Livro == livro
+                                select c).FirstOrDefault();
+            var livroAutor = (from c in _context.LivroAutor
+                              where c.Livro == livro
+                              select c).FirstOrDefault();
+
             _context.Livro.Remove(livro);
+            _context.LivroAssunto.Remove(livroAssunto);
+            _context.LivroAutor.Remove(livroAutor);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
