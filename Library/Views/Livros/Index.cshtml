@@ -1,15 +1,44 @@
 ﻿@{
-    ViewData["Title"] = "Livros";
+    ViewData["Title"] = "Meus livros";
     var livro = ViewBag.Livro;
     var pev = "; ";
     var virg = ", ";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
-<p>
-    <a asp-action="Create">Adicionar</a>
+<p class="text-center">
+    <a asp-action="Create" class="btn btn-dark">Novo Livro</a>
 </p>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in livro)
+        {
+            <div class="col-12 col-sm-4">
+                <div class="d-flex flex-column livros">
+                    <h3 class="text-center">@item.Titulo</h3>
+                    <br />
+                    <p>@item.Edicao ª edição </p>
+                   <b>Autor:</b>  @foreach (var autores in item.Autores)
+                    {
+                        @autores @pev
+                    }
+                <div class="text-center">
+                    <br />
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<!--
 <table class="table">
     <thead>
         <tr>
@@ -72,3 +101,4 @@
         }
     </tbody>
 </table>
+    -->
