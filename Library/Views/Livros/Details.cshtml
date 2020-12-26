@@ -77,6 +77,9 @@
     </dl>
 </div>
 <div>
-    @*<a asp-action="Edit" asp-route-id="@livro.Id">Editar</a> |*@
+    @foreach (var livros in livro)
+    {
+    <a asp-action="Edit" asp-route-id="@livros.Id">Editar</a> 
+    }
     <a asp-action="Index">Voltar</a>
 </div>
