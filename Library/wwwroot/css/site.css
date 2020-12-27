@@ -79,3 +79,23 @@ ul {
     border: 1px solid black;
     margin-bottom: 15px;
 }
+
+.foto {
+    width: 80%;
+    height: 100%;
+    min-height: 60px;
+    margin: 0 auto;
+}
+
+.selecionar-livro {
+    -webkit-transition: -webkit-transform .5s ease;
+    transition: transform .5s ease;
+    text-decoration: none;
+    color: black;
+}
+.selecionar-livro:hover {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.03);
+    text-decoration: none;
+    color: black;
+}

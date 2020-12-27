@@ -8,51 +8,66 @@
 {
 <h1 class="text-center">@titulo.Titulo</h1>
 }
-<br />
 
 <div class="text-center">
     <hr />
+        @foreach (var foto in livro)
+        {
+            @if (foto.Foto != null)
+            {
+                <div class="foto">
+                    @foto.Foto
+                </div>
+            }
+            else
+            {
+                <div class="foto text-center">
+                    <img src="~/image/sem-foto.jpg" alt="Sem foto" />
+                </div>
+            }
+
+        }
     <dl class="row">
-        <dt class="col-sm-6">
+        <dt class="col-sm-6 text-right">
             Título
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-6 text-left">
             @foreach (var titulo in livro)
             {
                 @titulo.Titulo
             }
         </dd>
-        <dt class="col-sm-6">
+        <dt class="col-sm-6 text-right">
             Edição
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-6 text-left">
             @foreach (var edicao in livro)
             {
                 @edicao.Edicao
             }
         </dd>
-        <dt class="col-sm-6">
+        <dt class="col-sm-6 text-right">
             Ano
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-6 text-left">
             @foreach (var ano in livro)
             {
                 @ano.Ano
             }
         </dd>
-        <dt class="col-sm-6">
+        <dt class="col-sm-6 text-right">
             Editora
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-6 text-left">
             @foreach (var editora in livro)
             {
                 @editora.Editora
             }
         </dd>
-        <dt class="col-sm-6">
+        <dt class="col-sm-6 text-right">
             Autor
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-6 text-left">
             @foreach (var livros in livro)
             {
                 @foreach (var autor in livros.Autores)
@@ -61,10 +76,10 @@
                 }
             }
         </dd>
-        <dt class="col-sm-6">
+        <dt class="col-sm-6 text-right">
             Assunto
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-6 text-left">
             @foreach (var livros in livro)
             {
                 @foreach (var assunto in livros.Assuntos)

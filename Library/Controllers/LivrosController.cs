@@ -1,11 +1,13 @@
 ﻿using Library.Data;
 using Library.Models;
 using Library.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,16 +64,34 @@ namespace Library.Controllers
                                 where livro.Id == ids
                                 select assunto.Nome).ToList();
 
-                Livro.Add(new Livros
+                var foto = selecionarFoto(ids);
+                if (foto != null)
                 {
-                    Id = ids,
-                    Titulo = titulo,
-                    Edicao = edicao,
-                    Ano = ano,
-                    Editora = editora,
-                    Autores = autores,
-                    Assuntos = assuntos
-                });
+                    Livro.Add(new Livros
+                    {
+                        Id = ids,
+                        Titulo = titulo,
+                        Edicao = edicao,
+                        Ano = ano,
+                        Editora = editora,
+                        Autores = autores,
+                        Assuntos = assuntos,
+                        Foto = foto
+                    });
+                } else
+                {
+                    Livro.Add(new Livros
+                    {
+                        Id = ids,
+                        Titulo = titulo,
+                        Edicao = edicao,
+                        Ano = ano,
+                        Editora = editora,
+                        Autores = autores,
+                        Assuntos = assuntos
+                    });
+                }
+             
             }
 
             ViewBag.Livro = Livro;
@@ -103,7 +123,7 @@ namespace Library.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores, List<string> listaAssuntos)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores, List<string> listaAssuntos, IList<IFormFile> foto)
         {
 
             var livroId = (from c in _context.Livro
@@ -232,7 +252,16 @@ namespace Library.Controllers
                         livro.LivroAssunto.Add(livroAssunto);
                     }
 
-                    _context.Update(livro);
+                    IFormFile fotoCapa = foto.FirstOrDefault();
+                    if (fotoCapa != null || fotoCapa.ContentType.ToLower().StartsWith("image/"))
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        fotoCapa.OpenReadStream().CopyTo(ms);
+                        livro.Dados = ms.ToArray();
+                        livro.ContentType = fotoCapa.ContentType;
+                    }
+
+                        _context.Update(livro);
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
@@ -458,6 +487,8 @@ namespace Library.Controllers
                             on LivroAssunto.LivroId equals livro.Id
                             where livro.Id == id
                             select assunto.Nome).ToList();
+            var foto = selecionarFoto(Convert.ToInt32(id));
+
 
             Livro.Add(new Livros
             {
@@ -467,7 +498,8 @@ namespace Library.Controllers
                 Ano = ano,
                 Editora = editora,
                 Autores = autores,
-                Assuntos = assuntos
+                Assuntos = assuntos,
+                Foto = foto
             });
 
             var assuntosId = (from assunto in _context.Assunto
@@ -485,6 +517,24 @@ namespace Library.Controllers
             }
             ViewBag.Assunto = listas;
             ViewBag.Livro = Livro;
+        }
+
+        public FileStreamResult selecionarFoto(int id)
+        {
+            var fotoDados = (from c in _context.Livro
+                            where c.Id == id
+                            select c.Dados).FirstOrDefault();
+            var fotoContentType = (from c in _context.Livro
+                                   where c.Id == id
+                                   select c.ContentType).FirstOrDefault();
+            if (fotoDados != null)
+            {
+                MemoryStream ms = new MemoryStream(fotoDados);
+                return new FileStreamResult(ms, fotoContentType);
+            } else
+            {
+                return null;
+            }
         }
 
         private bool LivroExists(int id)
