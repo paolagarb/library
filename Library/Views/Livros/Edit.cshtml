@@ -16,7 +16,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            @foreach (var foto in livro)
+            {
+            <div class="form-group">
+                <input type="file" name="foto" />
+            </div>
+            }
             @foreach (var livros in livro)
             {
                 <div class="form-group">

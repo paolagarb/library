@@ -4,29 +4,31 @@
     var virg = ", ";
 }
 <br />
-@foreach (var titulo in livro)
+@foreach (var livros in livro)
 {
-<h1 class="text-center">@titulo.Titulo</h1>
+    <h1 class="text-center">@livros.Titulo
+        <a asp-action="Edit" asp-route-id="@livros.Id" class="btn btn-secondary text-center">Editar</a>
+    </h1>
 }
 
 <div class="text-center">
     <hr />
-        @foreach (var foto in livro)
+    @foreach (var foto in livro)
+    {
+        @if (foto.Foto != null)
         {
-            @if (foto.Foto != null)
-            {
-                <div class="foto">
-                    @foto.Foto
-                </div>
-            }
-            else
-            {
-                <div class="foto text-center">
-                    <img src="~/image/sem-foto.jpg" alt="Sem foto" />
-                </div>
-            }
-
+            <div class="foto">
+                @foto.Foto
+            </div>
         }
+        else
+        {
+            <div class="foto text-center">
+                <img src="~/image/sem-foto.jpg" alt="Sem foto" />
+            </div>
+        }
+
+    }
     <dl class="row">
         <dt class="col-sm-6 text-right">
             Título
@@ -88,13 +90,8 @@
                 }
             }
         </dd>
-
     </dl>
 </div>
 <div>
-    @foreach (var livros in livro)
-    {
-    <a asp-action="Edit" asp-route-id="@livros.Id">Editar</a> 
-    }
-    <a asp-action="Index">Voltar</a>
+    <a asp-action="Index" class="text-left text-dark"> &larr; <u class="text-dark">Voltar</u></a>
 </div>

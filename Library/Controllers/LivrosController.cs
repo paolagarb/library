@@ -65,33 +65,18 @@ namespace Library.Controllers
                                 select assunto.Nome).ToList();
 
                 var foto = selecionarFoto(ids);
-                if (foto != null)
+
+                Livro.Add(new Livros
                 {
-                    Livro.Add(new Livros
-                    {
-                        Id = ids,
-                        Titulo = titulo,
-                        Edicao = edicao,
-                        Ano = ano,
-                        Editora = editora,
-                        Autores = autores,
-                        Assuntos = assuntos,
-                        Foto = foto
-                    });
-                } else
-                {
-                    Livro.Add(new Livros
-                    {
-                        Id = ids,
-                        Titulo = titulo,
-                        Edicao = edicao,
-                        Ano = ano,
-                        Editora = editora,
-                        Autores = autores,
-                        Assuntos = assuntos
-                    });
-                }
-             
+                    Id = ids,
+                    Titulo = titulo,
+                    Edicao = edicao,
+                    Ano = ano,
+                    Editora = editora,
+                    Autores = autores,
+                    Assuntos = assuntos,
+                    Foto = foto
+                });
             }
 
             ViewBag.Livro = Livro;
@@ -261,7 +246,7 @@ namespace Library.Controllers
                         livro.ContentType = fotoCapa.ContentType;
                     }
 
-                        _context.Update(livro);
+                    _context.Update(livro);
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
@@ -289,7 +274,7 @@ namespace Library.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string titulo, List<string> autores, int edicao, int ano, string editora, List<int> assuntos)
+        public async Task<IActionResult> Edit(int id, string titulo, List<string> autores, int edicao, int ano, string editora, List<int> assuntos, IList<IFormFile> foto)
         {
             try
             {
@@ -349,6 +334,23 @@ namespace Library.Controllers
                     }
                 }
 
+                IFormFile fotoCapa = foto.FirstOrDefault();
+                if (fotoCapa != null || fotoCapa.ContentType.ToLower().StartsWith("image/"))
+                {
+                    MemoryStream ms = new MemoryStream();
+                    fotoCapa.OpenReadStream().CopyTo(ms);
+
+                    var dados = (from c in _context.Livro
+                                 where c.Id == livro.Id
+                                 select c.Dados).FirstOrDefault();
+
+                    if (dados != ms.ToArray())
+                    {
+                        livro.Dados = ms.ToArray();
+                        livro.ContentType = fotoCapa.ContentType;
+                    }
+                }
+
                 _context.Livro.Update(livro);
                 await _context.SaveChangesAsync();
 
@@ -391,8 +393,8 @@ namespace Library.Controllers
                                     select c).ToList();
 
                 var livroAssuntoId = (from c in _context.LivroAssunto
-                                    where c.Livro == livro
-                                    select c.AssuntoId).ToList();
+                                      where c.Livro == livro
+                                      select c.AssuntoId).ToList();
                 int cont = 0;
 
                 foreach (var assunto in assuntos)
@@ -522,8 +524,8 @@ namespace Library.Controllers
         public FileStreamResult selecionarFoto(int id)
         {
             var fotoDados = (from c in _context.Livro
-                            where c.Id == id
-                            select c.Dados).FirstOrDefault();
+                             where c.Id == id
+                             select c.Dados).FirstOrDefault();
             var fotoContentType = (from c in _context.Livro
                                    where c.Id == id
                                    select c.ContentType).FirstOrDefault();
@@ -531,7 +533,8 @@ namespace Library.Controllers
             {
                 MemoryStream ms = new MemoryStream(fotoDados);
                 return new FileStreamResult(ms, fotoContentType);
-            } else
+            }
+            else
             {
                 return null;
             }
