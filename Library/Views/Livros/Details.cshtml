@@ -6,9 +6,10 @@
 <br />
 @foreach (var livros in livro)
 {
-    <h1 class="text-center">@livros.Titulo
-        <a asp-action="Edit" asp-route-id="@livros.Id" class="btn btn-secondary text-center">Editar</a>
-    </h1>
+    <h1 class="text-center">
+        @livros.Titulo
+    <a asp-action="Edit" asp-route-id="@livros.Id" class="btn btn-secondary text-center">Editar</a>
+</h1>
 }
 
 <div class="text-center">
@@ -17,8 +18,8 @@
     {
         @if (foto.Foto != null)
         {
-            <div class="foto">
-                @foto.Foto
+            <div class="div-foto">
+                <img src="/Livros/selecionarFoto/@foto.Id" class="foto" />
             </div>
         }
         else
@@ -29,6 +30,7 @@
         }
 
     }
+    <br />
     <dl class="row">
         <dt class="col-sm-6 text-right">
             Título

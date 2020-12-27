@@ -80,6 +80,11 @@ ul {
     margin-bottom: 15px;
 }
 
+.div-foto {
+    min-height: 40vh;
+    height: 40vh;
+}
+
 .foto {
     display: flex;
     align-content: center;
