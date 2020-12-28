@@ -13,41 +13,56 @@
     <a asp-action="Create" class="btn btn-dark">Novo</a>
 </p>
 
+<br />
+<form asp-controller="Livros" asp-action="Index" method="get">
+    <p>
+        @Html.DropDownList("busca", null, new
+        {
+       onchange = "document.location.href='/livros/index?busca='+this.value;"
+        })
+
+        <input type="text" name="search">
+        <input type="submit" value="Pesquisar" />
+    </p>
+</form>
+<br />
+
+
 <div class="container">
     <div class="row">
         @foreach (var item in livro)
         {
-        <div class="col-12 col-sm-4">
-            <a asp-action="Details" asp-route-id="@item.Id" class="selecionar-livro">
-                <div class="d-flex flex-column livros">
+            <div class="col-12 col-sm-4">
+                <a asp-action="Details" asp-route-id="@item.Id" class="selecionar-livro">
+                    <div class="d-flex flex-column livros">
 
-                    <h3 class="text-center">@item.Titulo</h3>
-                    <br />
-                    @if (item.Foto != null)
-                    {
-                        <div>
-                            <img src="/Livros/selecionarFoto/@item.Id" class="foto"/>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="foto text-center">
-                            <img src="~/image/sem-foto.jpg" alt="Sem foto" />
-                        </div>
-                    }
-                    <p>@item.Edicao ª edição </p>
-                    <b>Autor:</b>  @foreach (var autores in item.Autores)
-                    {
-                        @autores @pev
-                    }
-                    <div class="text-center">
+                        <h3 class="text-center">@item.Titulo</h3>
                         <br />
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-                    </div>
+                        @if (item.Foto != null)
+                        {
+                            <div>
+                                <img src="/Livros/selecionarFoto/@item.Id" class="foto" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <img src="~/image/sem-foto.jpg" alt="Sem foto" class="foto" />
+                            </div>
+                        }
+                        <p>@item.Edicao ª edição </p>
+                        <b>Autor:</b>  @foreach (var autores in item.Autores)
+                        {
+                            @autores @pev
+                        }
+                        <div class="text-center">
+                            <br />
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                        </div>
 
-                </div>
-            </a>
+                    </div>
+                </a>
             </div>
         }
     </div>

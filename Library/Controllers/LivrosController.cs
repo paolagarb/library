@@ -22,67 +22,259 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Route("livros/index")]
         // GET: Livros
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? busca, string search)
         {
             List<Livros> Livro = new List<Livros>();
 
-            var id = (from c in _context.Livro
-                      select c.Id).ToList();
+            List<SelectListItem> itens = new List<SelectListItem>();
+            SelectListItem item1 = new SelectListItem() { Text = "Livro", Value = "1", Selected = true };
+            SelectListItem item2 = new SelectListItem() { Text = "Autor", Value = "2", Selected = false };
+            SelectListItem item3 = new SelectListItem() { Text = "Editora", Value = "3", Selected = false };
+            itens.Add(item1);
+            itens.Add(item2);
+            itens.Add(item3);
 
-            foreach (var ids in id)
+            ViewBag.Busca = itens;
+
+            if (busca != null)
             {
-                var titulo = (from livro in _context.Livro
-                              where livro.Id == ids
-                              select livro.Titulo).FirstOrDefault();
+                itens.Where(i => i.Value == busca.ToString()).First().Selected = true;
+            }
+            if (busca == 1 && (!String.IsNullOrEmpty(search)))
+            {
+                var id = (from c in _context.Livro
+                          where c.Titulo.Contains(search)
+                          select c.Id).ToList();
 
-                var edicao = (from livro in _context.Livro
-                              where livro.Id == ids
-                              select livro.Edicao).FirstOrDefault();
-
-                var ano = (from livro in _context.Livro
-                           where livro.Id == ids
-                           select livro.Ano).FirstOrDefault();
-
-                var editora = (from livro in _context.Livro
-                               where livro.Id == ids
-                               select livro.Editora.Nome).FirstOrDefault();
-
-                var autores = (from autor in _context.Autor
-                               join livroAutor in _context.LivroAutor
-                               on autor.Id equals livroAutor.AutorId
-                               join livro in _context.Livro
-                               on livroAutor.LivroId equals livro.Id
-                               where livro.Id == ids
-                               select autor.Nome).ToList();
-
-                var assuntos = (from assunto in _context.Assunto
-                                join LivroAssunto in _context.LivroAssunto
-                                on assunto.Id equals LivroAssunto.AssuntoId
-                                join livro in _context.Livro
-                                on LivroAssunto.LivroId equals livro.Id
-                                where livro.Id == ids
-                                select assunto.Nome).ToList();
-
-                var foto = selecionarFoto(ids);
-
-                Livro.Add(new Livros
+                foreach (var ids in id)
                 {
-                    Id = ids,
-                    Titulo = titulo,
-                    Edicao = edicao,
-                    Ano = ano,
-                    Editora = editora,
-                    Autores = autores,
-                    Assuntos = assuntos,
-                    Foto = foto
-                });
+                    var titulo = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Titulo).FirstOrDefault();
+
+                    var edicao = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Edicao).FirstOrDefault();
+
+                    var ano = (from livro in _context.Livro
+                               where livro.Id == ids
+                               select livro.Ano).FirstOrDefault();
+
+                    var editora = (from livro in _context.Livro
+                                   where livro.Id == ids
+                                   select livro.Editora.Nome).FirstOrDefault();
+
+                    var autores = (from autor in _context.Autor
+                                   join livroAutor in _context.LivroAutor
+                                   on autor.Id equals livroAutor.AutorId
+                                   join livro in _context.Livro
+                                   on livroAutor.LivroId equals livro.Id
+                                   where livro.Id == ids
+                                   select autor.Nome).ToList();
+
+                    var assuntos = (from assunto in _context.Assunto
+                                    join LivroAssunto in _context.LivroAssunto
+                                    on assunto.Id equals LivroAssunto.AssuntoId
+                                    join livro in _context.Livro
+                                    on LivroAssunto.LivroId equals livro.Id
+                                    where livro.Id == ids
+                                    select assunto.Nome).ToList();
+
+                    var foto = selecionarFoto(ids);
+
+                    Livro.Add(new Livros
+                    {
+                        Id = ids,
+                        Titulo = titulo,
+                        Edicao = edicao,
+                        Ano = ano,
+                        Editora = editora,
+                        Autores = autores,
+                        Assuntos = assuntos,
+                        Foto = foto
+                    });
+                }
+                ViewBag.Livro = Livro;
+            }
+            else if (busca == 2 && (!String.IsNullOrEmpty(search)))
+            {
+                var id = (from c in _context.Livro
+                          join livroAutor in _context.LivroAutor
+                          on c.Id equals livroAutor.LivroId
+                          join autor in _context.Autor
+                          on livroAutor.AutorId equals autor.Id
+                          where autor.Nome.Contains(search)
+                          select c.Id).ToList();
+
+                foreach (var ids in id)
+                {
+                    var titulo = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Titulo).FirstOrDefault();
+
+                    var edicao = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Edicao).FirstOrDefault();
+
+                    var ano = (from livro in _context.Livro
+                               where livro.Id == ids
+                               select livro.Ano).FirstOrDefault();
+
+                    var editora = (from livro in _context.Livro
+                                   where livro.Id == ids
+                                   select livro.Editora.Nome).FirstOrDefault();
+
+                    var autores = (from autor in _context.Autor
+                                   join livroAutor in _context.LivroAutor
+                                   on autor.Id equals livroAutor.AutorId
+                                   join livro in _context.Livro
+                                   on livroAutor.LivroId equals livro.Id
+                                   where livro.Id == ids
+                                   select autor.Nome).ToList();
+
+                    var assuntos = (from assunto in _context.Assunto
+                                    join LivroAssunto in _context.LivroAssunto
+                                    on assunto.Id equals LivroAssunto.AssuntoId
+                                    join livro in _context.Livro
+                                    on LivroAssunto.LivroId equals livro.Id
+                                    where livro.Id == ids
+                                    select assunto.Nome).ToList();
+
+                    var foto = selecionarFoto(ids);
+
+                    Livro.Add(new Livros
+                    {
+                        Id = ids,
+                        Titulo = titulo,
+                        Edicao = edicao,
+                        Ano = ano,
+                        Editora = editora,
+                        Autores = autores,
+                        Assuntos = assuntos,
+                        Foto = foto
+                    });
+                }
+                ViewBag.Livro = Livro;
+            }
+            else if (busca == 3 && (!String.IsNullOrEmpty(search)))
+            {
+                var id = (from c in _context.Livro
+                                   join editora in _context.Editora
+                                   on c.EditoraId equals editora.Id
+                                   where editora.Nome.Contains(search)
+                                   select c.Id).ToList();
+                foreach (var ids in id)
+                {
+                    var titulo = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Titulo).FirstOrDefault();
+
+                    var edicao = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Edicao).FirstOrDefault();
+
+                    var ano = (from livro in _context.Livro
+                               where livro.Id == ids
+                               select livro.Ano).FirstOrDefault();
+
+                    var editora = (from livro in _context.Livro
+                                   where livro.Id == ids
+                                   select livro.Editora.Nome).FirstOrDefault();
+
+                    var autores = (from autor in _context.Autor
+                                   join livroAutor in _context.LivroAutor
+                                   on autor.Id equals livroAutor.AutorId
+                                   join livro in _context.Livro
+                                   on livroAutor.LivroId equals livro.Id
+                                   where livro.Id == ids
+                                   select autor.Nome).ToList();
+
+                    var assuntos = (from assunto in _context.Assunto
+                                    join LivroAssunto in _context.LivroAssunto
+                                    on assunto.Id equals LivroAssunto.AssuntoId
+                                    join livro in _context.Livro
+                                    on LivroAssunto.LivroId equals livro.Id
+                                    where livro.Id == ids
+                                    select assunto.Nome).ToList();
+
+                    var foto = selecionarFoto(ids);
+
+                    Livro.Add(new Livros
+                    {
+                        Id = ids,
+                        Titulo = titulo,
+                        Edicao = edicao,
+                        Ano = ano,
+                        Editora = editora,
+                        Autores = autores,
+                        Assuntos = assuntos,
+                        Foto = foto
+                    });
+                }
+                ViewBag.Livro = Livro;
+            }
+            else
+            {
+                var id = (from c in _context.Livro
+                          select c.Id).ToList();
+
+                foreach (var ids in id)
+                {
+                    var titulo = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Titulo).FirstOrDefault();
+
+                    var edicao = (from livro in _context.Livro
+                                  where livro.Id == ids
+                                  select livro.Edicao).FirstOrDefault();
+
+                    var ano = (from livro in _context.Livro
+                               where livro.Id == ids
+                               select livro.Ano).FirstOrDefault();
+
+                    var editora = (from livro in _context.Livro
+                                   where livro.Id == ids
+                                   select livro.Editora.Nome).FirstOrDefault();
+
+                    var autores = (from autor in _context.Autor
+                                   join livroAutor in _context.LivroAutor
+                                   on autor.Id equals livroAutor.AutorId
+                                   join livro in _context.Livro
+                                   on livroAutor.LivroId equals livro.Id
+                                   where livro.Id == ids
+                                   select autor.Nome).ToList();
+
+                    var assuntos = (from assunto in _context.Assunto
+                                    join LivroAssunto in _context.LivroAssunto
+                                    on assunto.Id equals LivroAssunto.AssuntoId
+                                    join livro in _context.Livro
+                                    on LivroAssunto.LivroId equals livro.Id
+                                    where livro.Id == ids
+                                    select assunto.Nome).ToList();
+
+                    var foto = selecionarFoto(ids);
+
+                    Livro.Add(new Livros
+                    {
+                        Id = ids,
+                        Titulo = titulo,
+                        Edicao = edicao,
+                        Ano = ano,
+                        Editora = editora,
+                        Autores = autores,
+                        Assuntos = assuntos,
+                        Foto = foto
+                    });
+                }
+                ViewBag.Livro = Livro;
             }
 
-            ViewBag.Livro = Livro;
-            return View(Livro);
+            return View();
         }
 
+        [Route("livros/detalhes")]
         // GET: Livros/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -95,6 +287,7 @@ namespace Library.Controllers
             return View();
         }
 
+        [Route("livros/adicionar")]
         // GET: Livros/Create
         public IActionResult Create()
         {
@@ -257,6 +450,7 @@ namespace Library.Controllers
             return View(livro);
         }
 
+        [Route("livros/editar")]
         // GET: Livros/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -269,6 +463,7 @@ namespace Library.Controllers
             return View();
         }
 
+        [Route("livros/editar")]
         // POST: Livros/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -420,6 +615,7 @@ namespace Library.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Route("livros/deletar")]
         // GET: Livros/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -432,6 +628,7 @@ namespace Library.Controllers
             return View();
         }
 
+        [Route("livros/deletar")]
         // POST: Livros/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
