@@ -308,18 +308,15 @@ namespace Library.Controllers
             var userId = (from c in _context.Users
                           where c.UserName == user
                           select c.Id).FirstOrDefault();
-            var assuntoLista = (from c in _context.Livro
-                                join livroAssunto in _context.LivroAssunto
-                                on c.Id equals livroAssunto.LivroId
-                                join assunto in _context.Assunto
-                                on livroAssunto.AssuntoId equals assunto.Id
+            var assuntoLista = (from c in _context.Assunto
                                 where c.IdentityUserId == userId
-                                select assunto).ToList();
+                                select c).ToList();
 
             ViewData["LivroAssunto"] = new SelectList(assuntoLista, "Id", "Nome");
             return View();
         }
 
+        [Route("livros/adicionar")]
         // POST: Livros/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -357,13 +354,6 @@ namespace Library.Controllers
             foreach (var autorList in listaAutores)
             {
                 Autor autor1 = new Autor();
-                //var autorBd = (from autor in _context.Autor
-                //               join livroAutor in _context.LivroAutor
-                //               on autor.Id equals livroAutor.AutorId
-                //               join livroX in _context.Livro
-                //               on livroAutor.LivroId equals livroX.Id
-                //               where livroX.IdentityUserId == userId
-                //               select autor).FirstOrDefault();
 
                var autorBd = (from c in _context.Autor
                  where c.Nome.Equals(autorList)

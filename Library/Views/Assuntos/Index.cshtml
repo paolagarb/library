@@ -25,12 +25,12 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> 
             </td>
         </tr>
 }
     </tbody>
 </table>
-
-<a asp-controller="Livros" asp-action="Create" class="btn btn-success text-center w-50 d-flex justify-content-center">Adicionar Livro</a>
+<div class="d-flex justify-content-center mt-3">
+    <a asp-controller="Livros" asp-action="Create" class="btn btn-success text-center w-25">Adicionar Livro</a>
+</div>

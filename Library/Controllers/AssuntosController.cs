@@ -130,35 +130,6 @@ namespace Library.Controllers
             return View(assunto);
         }
 
-        // GET: Assuntos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var assunto = await _context.Assunto
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (assunto == null)
-            {
-                return NotFound();
-            }
-
-            return View(assunto);
-        }
-
-        // POST: Assuntos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var assunto = await _context.Assunto.FindAsync(id);
-            _context.Assunto.Remove(assunto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool AssuntoExists(int id)
         {
             return _context.Assunto.Any(e => e.Id == id);

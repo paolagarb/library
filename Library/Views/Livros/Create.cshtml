@@ -1,53 +1,67 @@
 ﻿@model Library.Models.ViewModels.LivroAutorAssunto
 
 @{
-    ViewData["Title"] = "Adicionar";
+    ViewData["Title"] = "Novo Livro";
     var jaExiste = ViewBag.JaExiste;
 
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 <h5 class="text-danger">@jaExiste</h5>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create" asp-controller="livros" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+
+        <div class="col-sm-12 col-12">
             <div class="form-group">
                 <input type="file" name="foto" />
             </div>
+        </div>
+        <div class="col-sm-6 col-12">
             <div class="form-group">
                 <label asp-for="Livro.Titulo" class="control-label"></label>
                 <input asp-for="Livro.Titulo" class="form-control" />
                 <span asp-validation-for="Livro.Titulo" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-6 col-12">
             <div class="form-group">
                 <label asp-for="Livro.Edicao" class="control-label"></label>
                 <input asp-for="Livro.Edicao" class="form-control" />
                 <span asp-validation-for="Livro.Edicao" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-6 col-12">
             <div class="form-group">
                 <label asp-for="Livro.Ano" class="control-label"></label>
                 <input asp-for="Livro.Ano" class="form-control" />
                 <span asp-validation-for="Livro.Ano" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-6 col-12">
             <div class="form-group">
                 <label asp-for="Livro.Editora.Nome" class="control-label"></label>
                 <input asp-for="Livro.Editora.Nome" class="form-control" />
                 <span asp-validation-for="Livro.Editora" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-6 col-12">
             <div class="form-group">
                 <label asp-for="Assunto.Nome" class="control-label"></label>
                 <div class="d-flex flex-row">
                     <select asp-for="Assunto.Nome" class="form-control" asp-items="ViewBag.LivroAssunto" id="assuntoAdicionado"></select>
                     <input type="button" onclick="adicionarAssunto()" value="+" class="btn btn-success" />
+                    <a href="/Assuntos/Create" class="btn btn-primary">Novo</a>
+
                 </div>
-                <a href="/Assuntos/Create" class="btn btn-primary">Novo Assunto</a>
                 <div>
                     <ul id="assuntoLista">
                     </ul>
                 </div>
             </div>
+        </div>
+        <div class="col-sm-6 col-12">
             <div class="form-group">
                 <label asp-for="Autor.Nome" class="control-label"></label>
                 <div class="d-flex flex-row">
@@ -59,12 +73,14 @@
                     </ul>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Adicionar" class="btn btn-primary" onclick="validando()"/>
+        </div>
+        <div class="col-sm-12 col-12">
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="Adicionar" class="btn btn-primary w-25" onclick="validando()" />
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 <div>
     <a asp-action="Index">Voltar</a>
 </div>
@@ -106,7 +122,7 @@
             check.setAttribute('name', "listaAutores")
             check.setAttribute('value', autorAdicionado)
             autorLista.appendChild(check)
-        } 
+        }
 
         if (umAssunto) {
             let assunto = document.getElementById('assuntoAdicionado').value
@@ -135,7 +151,7 @@
         for (var i = 0; i <= assuntos.length; i++) {
             switch (assuntoNum) {
                 case i:
-                    item.innerHTML = assuntos[i+1]
+                    item.innerHTML = assuntos[i + 1]
                     break;
             }
         }
