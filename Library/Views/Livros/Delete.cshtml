@@ -11,8 +11,8 @@
 <h3 class="text-center mb-5">Tem certeza que deseja deletar esse livro?</h3>
 <br />
 
-<div class="d-flex flex-row flex-wrap livro-delete">
-    <div class="d-flex justify-content-start">
+<div class="d-flex flex-row flex-wrap livro-delete justify-content-center">
+    <div class="d-flex">
         @foreach (var livros in livro)
         {
             @if (livros.Foto != null)
@@ -55,7 +55,6 @@
                     }
                 </p>
             </div>
-          
             <p>
                 @foreach (var edicao in livro)
                 {
@@ -90,18 +89,18 @@
             </p>
         </div>
         <div>
-            
         </div>
     </div>
 </div>
 <div class="text-center mt-5">
-    @foreach (var livros in livro)
-    {
-        <form asp-action="Delete">
-            <input type="hidden" asp-route-id="@livros.Id" />
+   
+    <form asp-action="Delete">
+        @foreach (var livros in livro)
+        {
+            <input type="hidden" value="@livros.Id" name="id"/> 
+            }
             <input type="submit" value="Deletar" class="btn btn-danger w-25" />
         </form>
         <a asp-action="Index" class="text-left">Voltar</a>
-    }
 </div>
 
