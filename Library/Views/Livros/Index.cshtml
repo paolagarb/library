@@ -5,12 +5,13 @@
     var virg = ", ";
 }
 
-<h1 class="text-center">
+<h1 class="text-center d-flex flex-row justify-content-center">
     <img src="~/image/livros.png" alt="Livros" width="50" /> @ViewData["Title"]
+    <a asp-action="Create" class="btn btn-success ml-3">+</a>
 </h1>
 
 <p class="text-center">
-    <a asp-action="Create" class="btn btn-dark">Novo</a>
+ 
 </p>
 
 <br />
@@ -61,7 +62,7 @@
                         }
                         <div class="text-center">
                             <br />
-                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> 
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success w-100">Editar</a> 
                         </div>
 
                     </div>

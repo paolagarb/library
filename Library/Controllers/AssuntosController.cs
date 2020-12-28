@@ -1,5 +1,6 @@
 ﻿using Library.Data;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
+    [Authorize]
     public class AssuntosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +21,16 @@ namespace Library.Controllers
         // GET: Assuntos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Assunto.ToListAsync());
+            var user = User.Identity.Name;
+
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
+            var assuntos = (from c in _context.Assunto
+                     where c.IdentityUserId == userId
+                     select c).ToList();
+            
+            return View(assuntos);
         }
 
         // GET: Assuntos/Details/5
@@ -53,8 +64,14 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome")] Assunto assunto)
         {
+            var user = User.Identity.Name;
+
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
             if (ModelState.IsValid)
             {
+                assunto.IdentityUserId = userId;
                 _context.Add(assunto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

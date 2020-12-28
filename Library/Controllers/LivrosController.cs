@@ -1,6 +1,7 @@
 ﻿using Library.Data;
 using Library.Models;
 using Library.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
+    [Authorize]
     public class LivrosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,6 +28,12 @@ namespace Library.Controllers
         // GET: Livros
         public async Task<IActionResult> Index(int? busca, string search)
         {
+            var user = User.Identity.Name;
+
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
+
             List<Livros> Livro = new List<Livros>();
 
             List<SelectListItem> itens = new List<SelectListItem>();
@@ -45,7 +53,8 @@ namespace Library.Controllers
             if (busca == 1 && (!String.IsNullOrEmpty(search)))
             {
                 var id = (from c in _context.Livro
-                          where c.Titulo.Contains(search)
+                          where c.Titulo.Contains(search) &&
+                          c.IdentityUserId == userId
                           select c.Id).ToList();
 
                 foreach (var ids in id)
@@ -105,7 +114,8 @@ namespace Library.Controllers
                           on c.Id equals livroAutor.LivroId
                           join autor in _context.Autor
                           on livroAutor.AutorId equals autor.Id
-                          where autor.Nome.Contains(search)
+                          where autor.Nome.Contains(search) &&
+                          c.IdentityUserId == userId
                           select c.Id).ToList();
 
                 foreach (var ids in id)
@@ -161,10 +171,11 @@ namespace Library.Controllers
             else if (busca == 3 && (!String.IsNullOrEmpty(search)))
             {
                 var id = (from c in _context.Livro
-                                   join editora in _context.Editora
-                                   on c.EditoraId equals editora.Id
-                                   where editora.Nome.Contains(search)
-                                   select c.Id).ToList();
+                          join editora in _context.Editora
+                          on c.EditoraId equals editora.Id
+                          where editora.Nome.Contains(search) &&
+                          c.IdentityUserId == userId
+                          select c.Id).ToList();
                 foreach (var ids in id)
                 {
                     var titulo = (from livro in _context.Livro
@@ -218,6 +229,7 @@ namespace Library.Controllers
             else
             {
                 var id = (from c in _context.Livro
+                          where c.IdentityUserId == userId
                           select c.Id).ToList();
 
                 foreach (var ids in id)
@@ -291,8 +303,20 @@ namespace Library.Controllers
         // GET: Livros/Create
         public IActionResult Create()
         {
-            ViewData["LivroAssunto"] = new SelectList(_context.Assunto, "Id", "Nome");
+            var user = User.Identity.Name;
 
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
+            var assuntoLista = (from c in _context.Livro
+                                join livroAssunto in _context.LivroAssunto
+                                on c.Id equals livroAssunto.LivroId
+                                join assunto in _context.Assunto
+                                on livroAssunto.AssuntoId equals assunto.Id
+                                where c.IdentityUserId == userId
+                                select assunto).ToList();
+
+            ViewData["LivroAssunto"] = new SelectList(assuntoLista, "Id", "Nome");
             return View();
         }
 
@@ -303,15 +327,23 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Edicao,Ano,Editora")] Livro livro, [Bind("Nome")] Assunto assunto, List<string> listaAutores, List<string> listaAssuntos, IList<IFormFile> foto)
         {
+            var user = User.Identity.Name;
+
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
 
             var livroId = (from c in _context.Livro
-                           where c.Titulo.Equals(livro.Titulo)
+                           where c.Titulo.Equals(livro.Titulo) &&
+                           c.IdentityUserId == userId
                            select c.Id).FirstOrDefault();
             var livroEdicao = (from c in _context.Livro
-                               where c.Titulo.Equals(livro.Titulo)
+                               where c.Titulo.Equals(livro.Titulo) &&
+                               c.IdentityUserId == userId
                                select c.Edicao).FirstOrDefault();
             var livroEditora = (from c in _context.Livro
-                                where c.Titulo.Equals(livro.Titulo)
+                                where c.Titulo.Equals(livro.Titulo) &&
+                                c.IdentityUserId == userId
                                 select c.Editora).FirstOrDefault();
 
             if (livroId != 0 && livroEdicao == livro.Edicao && livroEditora == livro.Editora)
@@ -325,9 +357,17 @@ namespace Library.Controllers
             foreach (var autorList in listaAutores)
             {
                 Autor autor1 = new Autor();
-                var autorBd = (from c in _context.Autor
-                               where c.Nome.Equals(autorList)
-                               select c).FirstOrDefault();
+                //var autorBd = (from autor in _context.Autor
+                //               join livroAutor in _context.LivroAutor
+                //               on autor.Id equals livroAutor.AutorId
+                //               join livroX in _context.Livro
+                //               on livroAutor.LivroId equals livroX.Id
+                //               where livroX.IdentityUserId == userId
+                //               select autor).FirstOrDefault();
+
+               var autorBd = (from c in _context.Autor
+                 where c.Nome.Equals(autorList)
+                 select c).FirstOrDefault();
 
                 if (autorBd == null)
                 {
@@ -344,6 +384,7 @@ namespace Library.Controllers
 
             if (ModelState.IsValid)
             {
+                livro.IdentityUserId = userId;
                 var editora = (from c in _context.Editora
                                where c.Nome.Equals(livro.Editora.Nome)
                                select c.Nome).FirstOrDefault();
@@ -471,10 +512,17 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string titulo, List<string> autores, int edicao, int ano, string editora, List<int> assuntos, IList<IFormFile> foto)
         {
+            var user = User.Identity.Name;
+
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
+
             try
             {
                 var livro = (from c in _context.Livro
                              where c.Id == id
+                             && c.IdentityUserId == userId
                              select c).FirstOrDefault();
 
                 var tituloLivro = (from c in _context.Livro
@@ -653,6 +701,12 @@ namespace Library.Controllers
 
         public void carregaLivro(int? id)
         {
+            var user = User.Identity.Name;
+
+            var userId = (from c in _context.Users
+                          where c.UserName == user
+                          select c.Id).FirstOrDefault();
+
             List<Livros> Livro = new List<Livros>();
 
             var titulo = (from livro in _context.Livro

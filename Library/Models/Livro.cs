@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models
@@ -20,6 +21,8 @@ namespace Library.Models
         public virtual List<LivroAssunto> LivroAssunto { get; set; }
         public byte[] Dados { get; set; }
         public string ContentType { get; set; }
+        public virtual IdentityUser IdentityUser { get; set; }
+        public string IdentityUserId { get; set; }
 
         public Livro()
         {
