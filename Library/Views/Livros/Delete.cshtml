@@ -4,89 +4,104 @@
     var livro = ViewBag.Livro;
     var pev = "; ";
     var virg = ", ";
+    int i = 0;
+    int c = 0;
 }
 <br />
-@foreach (var titulo in livro)
-{
-    <h1 class="text-center">@titulo.Titulo - @ViewData["Title"]</h1>
-}
+<h3 class="text-center mb-5">Tem certeza que deseja deletar esse livro?</h3>
 <br />
-<h3 class="text-center">Tem certeza que deseja deletar esse livro?</h3>
 
-<div class="text-center">
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-6">
-            Título
-        </dt>
-        <dd class="col-sm-6">
-            @foreach (var titulo in livro)
+<div class="d-flex flex-row flex-wrap livro-delete">
+    <div class="d-flex justify-content-start">
+        @foreach (var livros in livro)
+        {
+            @if (livros.Foto != null)
             {
-                @titulo.Titulo
+                <div>
+                    <img src="/Livros/selecionarFoto/@livros.Id" class="foto-delete" />
+                </div>
             }
-        </dd>
-        <dt class="col-sm-6">
-            Edição
-        </dt>
-        <dd class="col-sm-6">
-            @foreach (var edicao in livro)
+            else
             {
-                @edicao.Edicao
+                <div class="text-center">
+                    <img src="~/image/sem-foto.jpg" alt="Sem foto" class="foto" />
+                </div>
             }
-        </dd>
-        <dt class="col-sm-6">
-            Ano
-        </dt>
-        <dd class="col-sm-6">
-            @foreach (var ano in livro)
-            {
-                @ano.Ano
-            }
-        </dd>
-        <dt class="col-sm-6">
-            Editora
-        </dt>
-        <dd class="col-sm-6">
-            @foreach (var editora in livro)
-            {
-                @editora.Editora
-            }
-        </dd>
-        <dt class="col-sm-6">
-            Autor
-        </dt>
-        <dd class="col-sm-6">
-            @foreach (var livros in livro)
-            {
-                @foreach (var autor in livros.Autores)
-                {
-                    @autor @pev
-                }
-            }
-        </dd>
-        <dt class="col-sm-6">
-            Assunto
-        </dt>
-        <dd class="col-sm-6">
-            @foreach (var livros in livro)
-            {
-                @foreach (var assunto in livros.Assuntos)
-                {
-                    @assunto @virg
-                }
-            }
-        </dd>
 
-    </dl>
+        }
+        <br />
+    </div>
+    <div class="d-flex flex-column div-delete justify-content-between">
+        <div>
+            <div class="d-flex flex-row">
+                <h5>
+                    @foreach (var titulo in livro)
+                    {
+                        @titulo.Titulo
+                    }
+                </h5> -
+                <p>
+                    @foreach (var livros in livro)
+                    {
+                        @foreach (var autor in livros.Autores)
+                        {
+                            @autor
+                            i++;
+                            @if (i > 1)
+                            {
+                                @pev
+                            }
+                        }
+                    }
+                </p>
+            </div>
+          
+            <p>
+                @foreach (var edicao in livro)
+                {
+                    @edicao.Edicao
+                } ª edição -
+                @foreach (var ano in livro)
+                {
+                    @ano.Ano
+                }
+            </p>
+            <p>
+                <b>Editora: </b>
+                @foreach (var editora in livro)
+                {
+                    @editora.Editora
+                }
+            </p>
+            <p>
+                <b>Assunto: </b>
+                @foreach (var livros in livro)
+                {
+                    @foreach (var assunto in livros.Assuntos)
+                    {
+                        @assunto
+                        c++;
+                        if (c > 1)
+                        {
+                            @virg
+                        }
+                    }
+                }
+            </p>
+        </div>
+        <div>
+            
+        </div>
+    </div>
 </div>
-<div class="text-center">
+<div class="text-center mt-5">
     @foreach (var livros in livro)
     {
         <form asp-action="Delete">
             <input type="hidden" asp-route-id="@livros.Id" />
-            <input type="submit" value="Deletar" class="btn btn-danger" />
+            <input type="submit" value="Deletar" class="btn btn-danger w-25" />
         </form>
-        <a asp-action="Index">Voltar</a>
+        <a asp-action="Index" class="text-left">Voltar</a>
     }
 </div>
 
