@@ -19,9 +19,10 @@
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             @foreach (var foto in livro)
             {
-            <div class="form-group">
-                <input type="file" name="foto" />
-            </div>
+                <input type="hidden" value="@foto.Id" name="id" />
+                <div class="form-group">
+                    <input type="file" name="foto" />
+                </div>
             }
             @foreach (var livros in livro)
             {

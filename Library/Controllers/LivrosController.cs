@@ -512,7 +512,6 @@ namespace Library.Controllers
             {
                 var livro = (from c in _context.Livro
                              where c.Id == id
-                             && c.IdentityUserId == userId
                              select c).FirstOrDefault();
 
                 var tituloLivro = (from c in _context.Livro
