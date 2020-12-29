@@ -1,13 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
+﻿/* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
 }
@@ -39,14 +30,10 @@ html {
         margin-left: 10%;
     }
 
-    /* .principal {
-        display: flex;
-        justify-content: start;
-        margin: 20px;
-        font-family: 'Architects Daughter', cursive;
-        font-size: 400%;
+    .biblioteca {
+        margin: 0 0 20px 220px;  
     }
-*/
+
     .inicio {
         background-image: url('../image/pineapple.jpg');
         background-repeat: no-repeat;

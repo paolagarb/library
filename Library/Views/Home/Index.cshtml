@@ -1,16 +1,16 @@
-﻿@if (User?.Identity.IsAuthenticated == false)
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biblioteca Pessoal</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap" rel="stylesheet">
+</head>
+@if (User?.Identity.IsAuthenticated == false)
 {
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Biblioteca Pessoal</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap" rel="stylesheet">
-    </head>
     <body>
         <div class="inicio">
             <div class="text-inicio d-flex flex-column justify-content-between">
@@ -29,44 +29,26 @@
                     <a class="nav-link text-dark link" href="../Identity/Account/Register">Cadastrar</a>
                 </div>
             </div>
-
-
-
-
-
-            </div>
-        <!--<div class="inicio d-flex flex-column justify-content-between">-->
-            @*<div class="m-4">
-                <h1 class="principal">Biblioteca Pessoal</h1>
-            </div>
-            <hr />
-            <div>
-                <p class="livros">
-                    A Biblioteca Pessoal te ajudará a manter o controle e organização de seus livros!
-                </p>
-                <div class="div-img">
-                    <p>Práitco</p>
-                    <p>Simples</p>
-                    <p>Intuitivo</p>
-                </div>
-            </div>
-            <div class="encontre">
-                <p> Encontre seus livros com facilidade! Realize buscas por autor, títulos ou gêneros. </p>
-                <p>Acesse de qualquer dispositivo com internet!</p>
-            </div>
-            <div class="login-cad">
-                <a class="nav-link text-dark link" href="../Identity/Account/Login">LOGIN</a>
-                <br />
-                <a class="nav-link text-dark link" href="../Identity/Account/Register">CADASTRAR</a>
-            </div>*@
-        <!--</div>-->
+        </div>
     </body>
-</html>
 }
 else
 {
-//exibir cadastro no sistema do usuário:
-//numero de generos
-// numero de livros
-//numero de autores
+<body>
+    <div class="inicio">
+        <div class="text-inicio d-flex flex-column justify-content-between">
+            <div class="d-flex flex-column">
+                <h1>Biblioteca</h1>
+                <h2>Pessoal</h2>
+            </div>
+            <div>
+             
+            </div>
+            <div class="d-flex flex-row biblioteca">
+                <a class="nav-link text-dark link" href="livros/index">Ir à minha biblioteca &rarr; </a>
+            </div>
+        </div>
+    </div>
+</body>
 }
+</html>
