@@ -38,6 +38,44 @@ html {
     .div-delete {
         margin-left: 10%;
     }
+
+    .principal {
+        display: flex;
+        justify-content: start;
+        margin: 20px;
+        font-family: 'Architects Daughter', cursive;
+        font-size: 400%;
+    }
+
+    .inicio {
+        background-image: url('../image/pineapple.jpg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        min-width: 100%;
+        min-height: 100%;
+        height: 100vh;
+        position: fixed;
+        background-position: center;
+    }
+
+    .login-cad {
+        padding: 15px;
+        background-color: rgba(204, 174, 169, 0.3);
+        width: 200px;
+        height: 150px;
+        margin: 15px 80px;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    .livros {
+        font-size: 160%;
+        margin-left: 100px;
+        width: 350px;
+    }
+
+    .div-img, .encontre {
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
@@ -46,6 +84,67 @@ html {
         flex-direction: column;
         justify-content: center;
     }
+
+    .principal {
+        font-family: 'Architects Daughter', cursive;
+        text-align: center;
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+    }
+
+    hr {
+        border: 2px solid black;
+        width: 60vh;
+        margin-top: -20px;
+    }
+
+    .login-cad {
+        margin: 0 auto;
+        background-color: rgba(204, 174, 169, 0.7);
+        width: 100vh;
+        height: 120px;
+        padding: 20px;
+        border-radius: 15px 0;
+        text-align: center;
+        font-size: 110%;
+        bottom: 0;
+        position: fixed;
+    }
+
+    .livros {
+        width: 85vh;
+        margin-left: 30px;
+        font-size: 130%;
+    }
+
+    .div-img {
+        display: flex;
+        flex-direction: column;
+        background-image: url('../image/pineapple.jpg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        min-width: 100%;
+        width: 100vh;
+        height: 50vh;
+        background-position: center;
+    }
+
+    .div-img p {
+        margin-top: 50px;
+        margin-left: 40px;
+    }
+
+    .encontre  p {
+        margin: 30px;
+    }
+   
+}
+
+.link:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.02);
+    font-weight: 500;
 }
 
 .border-top {
@@ -126,3 +225,4 @@ ul {
 .foto-delete {
     height: 50vh;
 }
+
