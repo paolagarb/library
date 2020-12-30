@@ -43,20 +43,23 @@
             <input type="button" onclick="adicionarAssunto()" value="+" class="btn-add" />
             <a href="/Assuntos/Create" class="btn-assuntos">Assuntos &#10141;</a>
         </div>
-            <ul id="assuntoLista">
-            </ul>
+        <ul id="assuntoLista">
+        </ul>
         <div class="d-flex flex-row justify-content-start">
             <b> <label asp-for="Autor.Nome"></label></b>
             <input asp-for="Autor.Nome" class="input-add" id="autorAdicionado" />
             <input type="button" onclick="adicionarAutor()" value="+" class="btn-add" />
         </div>
-            <ul id="autorLista">
-            </ul>
+        <ul id="autorLista">
+        </ul>
         <div class="div-novo-livro">
             <input type="submit" value="Adicionar" class="novo-livro add-livro" onclick="validando()" />
         </div>
     </div>
 </form>
+<div class="voltar">
+    <a asp-action="Index"> &larr; Voltar</a>
+</div>
 
 
 

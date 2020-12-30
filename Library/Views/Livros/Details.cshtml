@@ -1,100 +1,107 @@
-﻿@{   
+﻿@{
     Layout = "_Layout";
     var livro = ViewBag.Livro;
     var pev = "; ";
     var virg = ", ";
+    int i = 0;
+    int c = 0;
 }
 <br />
 @foreach (var livros in livro)
 {
-    <h1 class="text-center">
+    <h1 class="d-flex flex-row justify-content-center">
         @livros.Titulo
-    <a asp-action="Edit" asp-route-id="@livros.Id" class="btn btn-secondary text-center">Editar</a>
-</h1>
+        <a asp-action="Edit" asp-route-id="@livros.Id">
+            <img src="~/image/editar.png" alt="Editar" width="30" class="lixeira" />
+        </a>
+    </h1>
 }
 
-<div class="text-center">
-    <hr />
-    @foreach (var foto in livro)
-    {
-        @if (foto.Foto != null)
+<div class="d-flex flex-row flex-wrap livro-delete justify-content-center">
+    <div class="d-flex">
+        @foreach (var livros in livro)
         {
-            <div class="div-foto">
-                <img src="/Livros/selecionarFoto/@foto.Id" class="foto" />
-            </div>
-        }
-        else
-        {
-            <div class="text-center">
-                <img src="~/image/sem-foto.jpg" alt="Sem foto" class="foto"/>
-            </div>
-        }
+            @if (livros.Foto != null)
+            {
+                <div>
+                    <img src="/Livros/selecionarFoto/@livros.Id" class="foto-delete" />
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <img src="~/image/sem-foto.jpg" alt="Sem foto" class="foto" />
+                </div>
+            }
 
-    }
-    <br />
-    <dl class="row">
-        <dt class="col-sm-6 text-right">
-            Título
-        </dt>
-        <dd class="col-sm-6 text-left">
-            @foreach (var titulo in livro)
-            {
-                @titulo.Titulo
-            }
-        </dd>
-        <dt class="col-sm-6 text-right">
-            Edição
-        </dt>
-        <dd class="col-sm-6 text-left">
-            @foreach (var edicao in livro)
-            {
-                @edicao.Edicao
-            }
-        </dd>
-        <dt class="col-sm-6 text-right">
-            Ano
-        </dt>
-        <dd class="col-sm-6 text-left">
-            @foreach (var ano in livro)
-            {
-                @ano.Ano
-            }
-        </dd>
-        <dt class="col-sm-6 text-right">
-            Editora
-        </dt>
-        <dd class="col-sm-6 text-left">
-            @foreach (var editora in livro)
-            {
-                @editora.Editora
-            }
-        </dd>
-        <dt class="col-sm-6 text-right">
-            Autor
-        </dt>
-        <dd class="col-sm-6 text-left">
-            @foreach (var livros in livro)
-            {
-                @foreach (var autor in livros.Autores)
+        }
+        <br />
+    </div>
+    <div class="d-flex flex-column div-delete justify-content-between">
+        <div>
+            <p>
+                <b>Título: </b>
+                @foreach (var titulo in livro)
                 {
-                    @autor @pev
+                    @titulo.Titulo
                 }
-            }
-        </dd>
-        <dt class="col-sm-6 text-right">
-            Assunto
-        </dt>
-        <dd class="col-sm-6 text-left">
-            @foreach (var livros in livro)
-            {
-                @foreach (var assunto in livros.Assuntos)
+            </p>
+            <p>
+                <b>Autor:</b>
+                @foreach (var livros in livro)
                 {
-                    @assunto @virg
+                    @foreach (var autor in livros.Autores)
+                    {
+                        @autor
+                        i++;
+                        @if (i > 1)
+                        {
+                            @pev
+                        }
+                    }
                 }
-            }
-        </dd>
-    </dl>
+            </p>
+            <p>
+                <b>Edição: </b>
+                @foreach (var edicao in livro)
+                {
+                    @edicao.Edicao
+                } ª edição
+            </p>
+            <p>
+                <b>Ano: </b>
+                @foreach (var ano in livro)
+                {
+                    @ano.Ano
+                }
+            </p>
+            <p>
+                <b>Editora: </b>
+                @foreach (var editora in livro)
+                {
+                    @editora.Editora
+                }
+            </p>
+            <p>
+                <b>Gênero: </b>
+                @foreach (var livros in livro)
+                {
+                    @foreach (var assunto in livros.Assuntos)
+                    {
+                        @assunto
+                        c++;
+                        if (c > 1)
+                        {
+                            @virg
+                        }
+                    }
+                }
+            </p>
+        </div>
+        <div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Index" class="text-left text-dark"> &larr; <u class="text-dark">Voltar</u></a>
+<div class="voltar">
+    <a asp-action="Index"> &larr; Voltar</a>
 </div>

@@ -1,5 +1,5 @@
 ﻿
-@{   
+@{
     Layout = "_Layout";
     ViewData["Title"] = "Deletar";
     var livro = ViewBag.Livro;
@@ -9,8 +9,7 @@
     int c = 0;
 }
 <br />
-<h3 class="text-center mb-5">Tem certeza que deseja deletar esse livro?</h3>
-<br />
+<h3 class="text-center">Tem certeza que deseja deletar esse livro?</h3>
 
 <div class="d-flex flex-row flex-wrap livro-delete justify-content-center">
     <div class="d-flex">
@@ -34,14 +33,16 @@
     </div>
     <div class="d-flex flex-column div-delete justify-content-between">
         <div>
-            <div class="d-flex flex-row">
-                <h5>
+            <div>
+                <p>
+                    <b>Título: </b>
                     @foreach (var titulo in livro)
                     {
                         @titulo.Titulo
                     }
-                </h5> -
+                </p>
                 <p>
+                    <b>Autor:</b>
                     @foreach (var livros in livro)
                     {
                         @foreach (var autor in livros.Autores)
@@ -55,53 +56,59 @@
                         }
                     }
                 </p>
-            </div>
-            <p>
-                @foreach (var edicao in livro)
-                {
-                    @edicao.Edicao
-                } ª edição -
-                @foreach (var ano in livro)
-                {
-                    @ano.Ano
-                }
-            </p>
-            <p>
-                <b>Editora: </b>
-                @foreach (var editora in livro)
-                {
-                    @editora.Editora
-                }
-            </p>
-            <p>
-                <b>Assunto: </b>
-                @foreach (var livros in livro)
-                {
-                    @foreach (var assunto in livros.Assuntos)
+                <p>
+                    <b>Edição: </b>
+                    @foreach (var edicao in livro)
                     {
-                        @assunto
-                        c++;
-                        if (c > 1)
+                        @edicao.Edicao
+                    } ª edição
+                </p>
+                <p>
+                    <b>Ano: </b>
+                    @foreach (var ano in livro)
+                    {
+                        @ano.Ano
+                    }
+                </p>
+                <p>
+                    <b>Editora: </b>
+                    @foreach (var editora in livro)
+                    {
+                        @editora.Editora
+                    }
+                </p>
+                <p>
+                    <b>Gênero: </b>
+                    @foreach (var livros in livro)
+                    {
+                        @foreach (var assunto in livros.Assuntos)
                         {
-                            @virg
+                            @assunto
+                            c++;
+                            if (c > 1)
+                            {
+                                @virg
+                            }
                         }
                     }
-                }
-            </p>
-        </div>
-        <div>
+                </p>
+            </div>
+            <div>
+            </div>
         </div>
     </div>
-</div>
-<div class="text-center mt-5">
-   
-    <form asp-action="Delete">
-        @foreach (var livros in livro)
-        {
-            <input type="hidden" value="@livros.Id" name="id"/> 
+    </div>
+    <div class="text-center mt-5">
+
+        <form asp-action="Delete">
+            @foreach (var livros in livro)
+            {
+                <input type="hidden" value="@livros.Id" name="id" />
             }
             <input type="submit" value="Deletar" class="btn btn-danger w-25" />
         </form>
-        <a asp-action="Index" class="text-left">Voltar</a>
-</div>
+    </div>
 
+    <div class="voltar">
+        <a asp-action="Index"> &larr; Voltar</a>
+    </div>

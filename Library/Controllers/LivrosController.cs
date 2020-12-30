@@ -228,7 +228,6 @@ namespace Library.Controllers
                     });
                 }
                 ViewBag.Livro = Livro;
-
             }
             else
             {
@@ -429,7 +428,20 @@ namespace Library.Controllers
 
                         livro.LivroAssunto.Add(livroAssunto);
                     }
-
+                    try
+                    {
+                        IFormFile fotoCapa = foto.FirstOrDefault();
+                        if (fotoCapa != null)
+                        {
+                            MemoryStream ms = new MemoryStream();
+                            fotoCapa.OpenReadStream().CopyTo(ms);
+                            livro.Dados = ms.ToArray();
+                            livro.ContentType = fotoCapa.ContentType;
+                        }
+                    } catch (NullReferenceException)
+                    {
+                        return RedirectToAction(nameof(Error), new { message = "Erro ao adicionar livro" });
+                    }
                     _context.Update(livro);
                     await _context.SaveChangesAsync();
 
@@ -477,7 +489,7 @@ namespace Library.Controllers
 
                         livro.LivroAssunto.Add(livroAssunto);
                     }
-
+                    try { 
                     IFormFile fotoCapa = foto.FirstOrDefault();
                     if (fotoCapa != null || fotoCapa.ContentType.ToLower().StartsWith("image/"))
                     {
@@ -485,6 +497,11 @@ namespace Library.Controllers
                         fotoCapa.OpenReadStream().CopyTo(ms);
                         livro.Dados = ms.ToArray();
                         livro.ContentType = fotoCapa.ContentType;
+                    }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        return RedirectToAction(nameof(Error), new { message = "Erro ao adicionar livro" });
                     }
 
                     _context.Update(livro);
