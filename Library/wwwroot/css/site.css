@@ -85,51 +85,7 @@ html {
         height: 10vh;
     }
 
-    .novo-livro {
-        position: fixed;
-        bottom: 0;
-        font-size: 140%;
-        width: 25vh;
-        height: 50px;
-        background-color: black;
-        color: white;
-        font-family: 'Roboto Slab', serif;
-        border-radius: 40px 40px 0 0;
-        text-align: center;
-    }
-
-    .roboto {
-        font-family: 'Roboto Slab', serif;
-    }
-
-    .novo-livro:hover {
-        color: black;
-        background-color: white;
-        border: 1px solid black;
-    }
-
-    .input-livro {
-        width: 72%;
-        border-radius: 25px;
-        margin-right: 8px;
-        padding-left: 15px;
-    }
-
-    .button-livro {
-        width: 12%;
-        background-color: black;
-        color: white;
-        border-radius: 25px 25px 25px 0;
-        text-align: center;
-    }
-
-    #busca {
-        width: 10%;
-        border-radius: 20px 20px 0 20px;
-        padding-left: 25px;
-        margin-right: 8px;
-    }
-
+  
     .ordenar div {
         margin-right: 30px;
         margin-left: 5px;
@@ -137,6 +93,38 @@ html {
 
     .livro-delete {
         margin-top: 80px;
+    }
+
+    .foto {
+        height: 220px;
+        width: auto;
+        margin-right: 15px;
+    }
+
+    .div-foto {
+        min-width: 220px;
+        max-width: 220px;
+    }
+
+    .title {
+        margin-top: -60px;
+    }
+
+    .novo-livro {
+        height: 50px;
+    }
+
+    #busca {
+        width: 10%;
+        padding-left: 25px;
+    }
+
+    .button-livro {
+        width: 12%;
+    }
+
+    .input-livro {
+        width: 72%;
     }
 
 }
@@ -160,15 +148,49 @@ html {
         border-radius: 5px 30px 5px 5px;
         height: 40px;
     }
+
         .add-livro:hover {
             color: black;
             background-color: white;
             border: 1px solid black;
         }
 
-        .div-create {
-            max-width: 100vh;
-        }
+    .div-create {
+        max-width: 100vh;
+    }
+
+    .foto {
+        height: auto;
+        width: 20vh;
+        margin-right: 15px;
+    }
+
+    .div-foto {
+        min-width: 25vh;
+        max-width: 25vh;
+    }
+
+    .title {
+        margin-top: -10px;
+    }
+
+    .novo-livro {
+        height: 25px;
+    }
+
+    #busca {
+        width: 70%;
+        padding-left: 10px;
+    }
+
+    .button-livro {
+        width: 70%;
+    }
+
+    .input-livro {
+        width: 100%;
+    }
+
 }
 
 .div-novo-livro {
@@ -281,22 +303,13 @@ ul {
     margin-bottom: 15px;
 }
 
-.foto {
-    height: 220px;
-    width: auto;
-    margin-right: 15px;
-}
-.div-foto {
-    min-width: 220px;
-    max-width: 220px;
-}
 
 .selecionar-livro {
     -webkit-transition: -webkit-transform .5s ease;
     transition: transform .5s ease;
 }
 
-    .selecionar-livro:hover, .btn-detalhes:hover {
+    .selecionar-livro:hover, .btn-detalhes:hover, .novo-livro:hover {
         -webkit-transform: scale(1.05);
         transform: scale(1.03);
         text-decoration: none;
@@ -334,10 +347,6 @@ ul {
     text-align: center;
 }
 
-    .title {
-        margin-top: -60px;
-    }
-
     .edit {
         margin-top: -10px;
     }
@@ -360,3 +369,37 @@ ul {
         bottom: 10px;
         position: fixed;
     }
+
+.novo-livro {
+    position: fixed;
+    bottom: 0;
+    font-size: 140%;
+    width: 25vh;
+    background-color: black;
+    color: white;
+    font-family: 'Roboto Slab', serif;
+    border-radius: 40px 40px 0 0;
+    text-align: center;
+}
+
+.roboto {
+    font-family: 'Roboto Slab', serif;
+}
+
+.input-livro {
+    border-radius: 25px;
+    margin-right: 8px;
+    padding-left: 15px;
+}
+
+.button-livro {
+    background-color: black;
+    color: white;
+    border-radius: 25px 25px 25px 0;
+    text-align: center;
+}
+
+#busca {
+    border-radius: 20px 20px 0 20px;
+    margin-right: 8px;
+}
