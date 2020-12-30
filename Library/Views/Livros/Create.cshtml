@@ -1,89 +1,64 @@
 ﻿@model Library.Models.ViewModels.LivroAutorAssunto
 
-@{    
+@{
     Layout = "_Layout";
     ViewData["Title"] = "Novo Livro";
     var jaExiste = ViewBag.JaExiste;
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<h1>@ViewData["Title"]</h1>
 <h5 class="text-danger">@jaExiste</h5>
-<hr />
+<br>
+
+
 <form asp-action="Create" asp-controller="livros" enctype="multipart/form-data" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="row">
-
-        <div class="col-sm-12 col-12">
-            <div class="form-group">
-                <input type="file" name="foto" />
-            </div>
+    <div class="d-flex flex-column div-create justify-content-center">
+        <div class="d-flex flex-row justify-content-start">
+            <b>Capa</b>
+            <input type="file" name="foto" class="input-add" />
         </div>
-        <div class="col-sm-6 col-12">
-            <div class="form-group">
-                <label asp-for="Livro.Titulo" class="control-label"></label>
-                <input asp-for="Livro.Titulo" class="form-control" />
-                <span asp-validation-for="Livro.Titulo" class="text-danger"></span>
-            </div>
+        <div class="d-flex flex-row justify-content-start">
+            <b>   <label asp-for="Livro.Titulo"></label></b>
+            <input asp-for="Livro.Titulo" class="input-add" />
+            <span asp-validation-for="Livro.Titulo"></span>
         </div>
-        <div class="col-sm-6 col-12">
-            <div class="form-group">
-                <label asp-for="Livro.Edicao" class="control-label"></label>
-                <input asp-for="Livro.Edicao" class="form-control" />
-                <span asp-validation-for="Livro.Edicao" class="text-danger"></span>
-            </div>
+        <div class="d-flex flex-row justify-content-start">
+            <b>  <label asp-for="Livro.Edicao"></label></b>
+            <input asp-for="Livro.Edicao" class="input-add" />
+            <span asp-validation-for="Livro.Edicao"></span>
         </div>
-        <div class="col-sm-6 col-12">
-            <div class="form-group">
-                <label asp-for="Livro.Ano" class="control-label"></label>
-                <input asp-for="Livro.Ano" class="form-control" />
-                <span asp-validation-for="Livro.Ano" class="text-danger"></span>
-            </div>
+        <div class="d-flex flex-row justify-content-start">
+            <b>  <label asp-for="Livro.Ano"></label></b>
+            <input asp-for="Livro.Ano" class="input-add" />
+            <span asp-validation-for="Livro.Ano"></span>
         </div>
-        <div class="col-sm-6 col-12">
-            <div class="form-group">
-                <label asp-for="Livro.Editora.Nome" class="control-label"></label>
-                <input asp-for="Livro.Editora.Nome" class="form-control" />
-                <span asp-validation-for="Livro.Editora" class="text-danger"></span>
-            </div>
+        <div class="d-flex flex-row justify-content-start">
+            <b> <label asp-for="Livro.Editora.Nome"></label></b>
+            <input asp-for="Livro.Editora.Nome" class="input-add" />
+            <span asp-validation-for="Livro.Editora"></span>
         </div>
-        <div class="col-sm-6 col-12">
-            <div class="form-group">
-                <label asp-for="Assunto.Nome" class="control-label"></label>
-                <div class="d-flex flex-row">
-                    <select asp-for="Assunto.Nome" class="form-control" asp-items="ViewBag.LivroAssunto" id="assuntoAdicionado"></select>
-                    <input type="button" onclick="adicionarAssunto()" value="+" class="btn btn-success" />
-                    <a href="/Assuntos/Create" class="btn btn-primary">Novo</a>
-
-                </div>
-                <div>
-                    <ul id="assuntoLista">
-                    </ul>
-                </div>
-            </div>
+        <div class="d-flex flex-row justify-content-start">
+            <b><label asp-for="Assunto.Nome"></label></b>
+            <select asp-for="Assunto.Nome" class="input-add" asp-items="ViewBag.LivroAssunto" id="assuntoAdicionado"></select>
+            <input type="button" onclick="adicionarAssunto()" value="+" class="btn-add" />
+            <a href="/Assuntos/Create" class="btn-assuntos">Assuntos &#10141;</a>
         </div>
-        <div class="col-sm-6 col-12">
-            <div class="form-group">
-                <label asp-for="Autor.Nome" class="control-label"></label>
-                <div class="d-flex flex-row">
-                    <input asp-for="Autor.Nome" class="form-control" id="autorAdicionado" />
-                    <input type="button" onclick="adicionarAutor()" value="+" class="btn btn-success" />
-                </div>
-                <div>
-                    <ul id="autorLista">
-                    </ul>
-                </div>
-            </div>
+            <ul id="assuntoLista">
+            </ul>
+        <div class="d-flex flex-row justify-content-start">
+            <b> <label asp-for="Autor.Nome"></label></b>
+            <input asp-for="Autor.Nome" class="input-add" id="autorAdicionado" />
+            <input type="button" onclick="adicionarAutor()" value="+" class="btn-add" />
         </div>
-        <div class="col-sm-12 col-12">
-            <div class="d-flex justify-content-center">
-                <input type="submit" value="Adicionar" class="btn btn-primary w-25" onclick="validando()" />
-            </div>
+            <ul id="autorLista">
+            </ul>
+        <div class="div-novo-livro">
+            <input type="submit" value="Adicionar" class="novo-livro add-livro" onclick="validando()" />
         </div>
     </div>
 </form>
-<div>
-    <a asp-action="Index">Voltar</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

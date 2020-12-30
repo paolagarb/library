@@ -85,13 +85,6 @@ html {
         height: 10vh;
     }
 
-    .div-novo-livro {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-    }
-
     .novo-livro {
         position: fixed;
         bottom: 0;
@@ -149,11 +142,88 @@ html {
         flex-direction: column;
         justify-content: center;
     }
+
+    .add-livro {
+        background-color: black;
+        color: white;
+        width: 120px;
+        border-radius: 5px 30px 5px 5px;
+        height: 40px;
+    }
+        .add-livro:hover {
+            color: black;
+            background-color: white;
+            border: 1px solid black;
+        }
+
+        .div-create {
+            max-width: 100vh;
+        }
 }
+
+.div-novo-livro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.input-add {
+    border-radius: 40px 40px 0 40px;
+    height: 30px;
+    width: 55%;
+    padding-left: 15px;
+}
+
+.btn-add {
+    width: 50px;
+    background-color: black;
+    color: white;
+    border-radius: 5px 35px 5px 5px;
+    height: 30px;
+    max-height: 30px;
+    margin-left: 5px;
+}
+
+.btn-assuntos {
+    background-color: black;
+    color: white;
+    border-radius: 0px 25px 25px 0px;
+    width: 120px;
+    height: 30px;
+    text-align: center;
+    margin-left: 5px;
+}
+
+    .btn-assuntos:hover, .btn-add:hover {
+        color: white;
+        text-decoration: none;
+        -webkit-transform: scale(1.1);
+        transform: scale(1.01);
+    }
+
+.div-create {
+    width: 75vh;
+    margin: 0 auto;
+}
+
+    .div-create div {
+        margin-top: 25px;
+    }
+
+#assuntoLista, #autorLista {
+    margin-left: 40px;
+}
+
+.div-create b {
+    margin-right: 10px;
+    min-width: 70px;
+}
+
 
 .link:hover {
     -webkit-transform: scale(1.1);
-    transform: scale(1.02);
+    transform: scale(1.01);
     font-weight: 500;
 }
 
