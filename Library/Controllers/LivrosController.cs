@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -567,20 +568,26 @@ namespace Library.Controllers
                 }
 
                 IFormFile fotoCapa = foto.FirstOrDefault();
-                if (fotoCapa != null || fotoCapa.ContentType.ToLower().StartsWith("image/"))
+                try
                 {
-                    MemoryStream ms = new MemoryStream();
-                    fotoCapa.OpenReadStream().CopyTo(ms);
-
-                    var dados = (from c in _context.Livro
-                                 where c.Id == livro.Id
-                                 select c.Dados).FirstOrDefault();
-
-                    if (dados != ms.ToArray())
+                    if (fotoCapa != null || fotoCapa.ContentType.ToLower().StartsWith("image/"))
                     {
-                        livro.Dados = ms.ToArray();
-                        livro.ContentType = fotoCapa.ContentType;
+                        MemoryStream ms = new MemoryStream();
+                        fotoCapa.OpenReadStream().CopyTo(ms);
+
+                        var dados = (from c in _context.Livro
+                                     where c.Id == livro.Id
+                                     select c.Dados).FirstOrDefault();
+
+                        if (dados != ms.ToArray())
+                        {
+                            livro.Dados = ms.ToArray();
+                            livro.ContentType = fotoCapa.ContentType;
+                        }
                     }
+                } catch (NullReferenceException)
+                {
+                    return RedirectToAction(nameof(Error), new { message = "Erro ao atualizar livro" });
                 }
 
                 _context.Livro.Update(livro);
@@ -783,6 +790,16 @@ namespace Library.Controllers
         private bool LivroExists(int id)
         {
             return _context.Livro.Any(e => e.Id == id);
+        }
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
         }
     }
 }

@@ -1,44 +1,112 @@
 ﻿@{
     Layout = "_Layout";
-    ViewData["Title"] = "Meus livros";
+    ViewData["Title"] = "Minha Biblioteca";
     var livro = ViewBag.Livro;
-    var pev = "; ";
-    var virg = ", ";
+    var pev = "...+";
+    int i = 0;
+    int c = 0;
 }
 
-<h1 class="text-center d-flex flex-row justify-content-center">
-    <img src="~/image/livros.png" alt="Livros" width="50" /> @ViewData["Title"]
-    <a asp-action="Create" class="btn btn-success ml-3">+</a>
+<h1 class="roboto">
+    @ViewData["Title"]
 </h1>
-
-<p class="text-center">
- 
-</p>
 
 <br />
 <form asp-controller="Livros" asp-action="Index" method="get">
-    <p>
+    <div class="d-flex flex-row">
         @Html.DropDownList("busca", null, new
         {
-       onchange = "document.location.href='/livros/index?busca='+this.value;"
+         onchange = "document.location.href='/livros/index?busca='+this.value;"
         })
-        <input type="text" name="search">
-        <input type="submit" value="Pesquisar" />
-    </p>
+
+        <input type="text" name="search" class="input-livro">
+        <input type="submit" value="Pesquisar" class="button-livro" />
+    </div>
 </form>
 <br />
+<div class="ordenar d-flex flex-row justify-content-end">
+    @*Ordenar por: ....*@
+    <div>Autor 	&uarr; &darr;</div>
+    <div>Título &uarr; &darr;</div>
+    <div>Gênero &uarr; &darr;</div>
+</div>
 
 <div class="container">
     <div class="row">
         @foreach (var item in livro)
         {
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-6 mt-5">
+                <div class="d-flex flex-row">
+                    <div class="div-foto">
+                        @if (item.Foto != null)
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                                <img src="/Livros/selecionarFoto/@item.Id" class="foto selecionar-livro" alt="Capa do livro" />
+                            </a>
+                        }
+                        else
+                        { <a asp-action="Details" asp-route-id="@item.Id">
+                                <img src="~/image/sem-foto.jpg" class="foto selecionar-livro" alt="Sem foto" />
+                            </a>
+                        }
+                    </div>
+                    <div class="d-flex flex-column justify-content-between">
+                        <div class="d-flex flex-row">
+                            <div class="autor">
+
+                                @foreach (var autores in item.Autores)
+                                {
+                                    i = 0;
+                                }
+                                @foreach (var autores in item.Autores)
+                                {
+                                    @if (i == 0)
+                                    {
+                                        @autores
+                                    }
+                                    @if (i == 1)
+                                    {
+                                        @pev
+                                    }
+                                    i++;
+                                }
+                            </div>
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn edit">
+                                    <img src="~/image/editar.png" alt="Editar" width="15" />
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="text-center title">@item.Titulo</h5>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-detalhes">
+                                Detalhes
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <img src="~/image/lixeira.png" alt="Lixeira" width="20" class="lixeira" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@*<div class="container">
+    <div class="row">
+        @foreach (var item in livro)
+        {
+            <div class="col-12 col-sm-6">
                 <a asp-action="Details" asp-route-id="@item.Id" class="selecionar-livro">
                     <div class="d-flex flex-column livros">
                         <div class="d-flex flex-row justify-content-center">
                             <h3 class="text-center">@item.Titulo</h3>
                             <a asp-action="Delete" asp-route-id="@item.Id">
-                                <img src="~/image/lixeira.png" alt="Lixeira" width="20" class="ml-1 mt-1"/>
+                                <img src="~/image/lixeira.png" alt="Lixeira" width="20" class="ml-1 mt-1" />
                             </a>
                         </div>
                         <br />
@@ -48,25 +116,30 @@
                                 <img src="/Livros/selecionarFoto/@item.Id" class="foto" />
                             </div>
                         }
-                        else
-                        {
+                        else*@
+@*{*@
+@*<div class="text-center">
+                                    <img src="~/image/sem-foto.jpg" alt="Sem foto" class="foto" />
+                                </div>
+                            }
+                            <p>@item.Edicao ª edição </p>
+                            <b>Autor:</b>  @foreach (var autores in item.Autores)
+                            {
+                                @autores @pev
+                            }
                             <div class="text-center">
-                                <img src="~/image/sem-foto.jpg" alt="Sem foto" class="foto" />
+                                <br />
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success w-100">Editar</a>
                             </div>
-                        }
-                        <p>@item.Edicao ª edição </p>
-                        <b>Autor:</b>  @foreach (var autores in item.Autores)
-                        {
-                            @autores @pev
-                        }
-                        <div class="text-center">
-                            <br />
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success w-100">Editar</a> 
-                        </div>
 
-                    </div>
-                </a>
-            </div>
-        }
-    </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>*@
+
+
+<div class="div-novo-livro">
+    <a asp-action="Create" class="novo-livro">Novo Livro</a>
 </div>
