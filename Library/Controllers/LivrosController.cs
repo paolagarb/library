@@ -27,7 +27,7 @@ namespace Library.Controllers
 
         [Route("livros/index")]
         // GET: Livros
-        public async Task<IActionResult> Index(int? busca, string search)
+        public async Task<IActionResult> Index(int? busca, string search, string order)
         {
             var user = User.Identity.Name;
 
@@ -46,6 +46,7 @@ namespace Library.Controllers
             itens.Add(item3);
 
             ViewBag.Busca = itens;
+            ViewBag.Titulo = order == "Titulo" ? "Titulo_desc" : "Titulo";
 
             if (busca != null)
             {
@@ -94,7 +95,8 @@ namespace Library.Controllers
 
                     var foto = selecionarFoto(ids);
 
-                    Livro.Add(new Livros
+                    
+                        Livro.Add(new Livros
                     {
                         Id = ids,
                         Titulo = titulo,
@@ -226,6 +228,7 @@ namespace Library.Controllers
                     });
                 }
                 ViewBag.Livro = Livro;
+
             }
             else
             {
@@ -282,6 +285,19 @@ namespace Library.Controllers
                     });
                 }
                 ViewBag.Livro = Livro;
+
+                if (order != null)
+                {
+                    switch (order)
+                    {
+                        case "Titulo":
+                            ViewBag.Livro = Livro.OrderBy(c => c.Titulo);
+                            break;
+                        default:
+                            ViewBag.Livro = Livro.OrderByDescending(c => c.Titulo);
+                            break;
+                    }
+                }
             }
 
             return View();
@@ -356,9 +372,9 @@ namespace Library.Controllers
             {
                 Autor autor1 = new Autor();
 
-               var autorBd = (from c in _context.Autor
-                 where c.Nome.Equals(autorList)
-                 select c).FirstOrDefault();
+                var autorBd = (from c in _context.Autor
+                               where c.Nome.Equals(autorList)
+                               select c).FirstOrDefault();
 
                 if (autorBd == null)
                 {
@@ -585,7 +601,8 @@ namespace Library.Controllers
                             livro.ContentType = fotoCapa.ContentType;
                         }
                     }
-                } catch (NullReferenceException)
+                }
+                catch (NullReferenceException)
                 {
                     return RedirectToAction(nameof(Error), new { message = "Erro ao atualizar livro" });
                 }
