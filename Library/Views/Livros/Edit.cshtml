@@ -4,77 +4,53 @@
     var livro = ViewBag.Livro;
 }
 
-}
-<br />
-@foreach (var titulo in livro)
-{
-    <h1 class="text-center">@titulo.Titulo</h1>
-}
-<h3 class="text-center">@ViewData["Title"]</h3>
+<h3>@ViewData["Title"]</h3>
 <br />
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
-            @foreach (var foto in livro)
-            {
-                <input type="hidden" value="@foto.Id" name="id" />
-                <div class="form-group">
-                    <input type="file" name="foto" />
-                </div>
-            }
-            @foreach (var livros in livro)
-            {
-                <div class="form-group">
-                    Título <input type="text" name="titulo" value="@livros.Titulo" class="form-control" />
-                </div>
-            }
-            @foreach (var livros in livro)
-            {
-                <div class="form-group">
-                    Edição <input type="text" name="edicao" value="@livros.Edicao" class="form-control" />
-                </div>
-            }
-            @foreach (var livros in livro)
-            {
-                <div class="form-group">
-                    Ano <input type="text" name="ano" value="@livros.Ano" class="form-control" />
-                </div>
-            }
-            @foreach (var livros in livro)
-            {
-                <div class="form-group">
-                    Editora <input type="text" name="editora" value="@livros.Editora" class="form-control" />
-                </div>
-            }
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="d-flex flex-column div-create justify-content-center">
+        @foreach (var livros in livro)
+        {<div class="d-flex flex-row justify-content-start">
+                <b>Capa</b>
+                <input type="file" name="foto" class="input-add" value="@livros.Foto" />
+            </div>
+            <input type="hidden" value="@livros.Id" name="id" />
+            <div class="d-flex flex-row justify-content-start">
+                <b>Título</b> <input type="text" name="titulo" value="@livros.Titulo" class="input-add" />
+            </div>
+            <div class="d-flex flex-row justify-content-start">
+                <b>Edição</b> <input type="text" name="edicao" value="@livros.Edicao" class="input-add" />
+            </div>
+            <div class="d-flex flex-row justify-content-start">
+                <b>Ano</b> <input type="text" name="ano" value="@livros.Ano" class="input-add" />
+            </div>
+            <div class="d-flex flex-row justify-content-start">
+                <b>Editora</b> <input type="text" name="editora" value="@livros.Editora" class="input-add" />
+            </div>
 
             @foreach (var assunto in ViewBag.Assunto)
             {
-                <div class="form-group">
-                    Assunto <br />
-                    @Html.DropDownList("assuntos", (SelectList)assunto, new { @class = "form-control" })
+                <div class="d-flex flex-row justify-content-start">
+                    <b>Assunto</b>
+                    @Html.DropDownList("assuntos", (SelectList)assunto, new { @class = "input-add" })
                 </div>
             }
 
-            @foreach (var livros in livro)
+            @foreach (var autores in livros.Autores)
             {
-                @foreach (var autores in livros.Autores)
-                {
-                    <div class="form-group">
-                        Autor <input type="text" name="autores" value="@autores" class="form-control" />
-                    </div>
-                }
+                <div class="d-flex flex-row justify-content-start">
+                    <b>Autor</b> <input type="text" name="autores" value="@autores" class="input-add" />
+                </div>
             }
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-            </div>
-        </form>
+        }
+        <div class="div-novo-livro">
+            <input type="submit" value="Salvar" class="novo-livro add-livro" />
+        </div>
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Voltar</a>
+<div class="voltar">
+    <a asp-action="Index"> &larr; Voltar</a>
 </div>
 
 @section Scripts {

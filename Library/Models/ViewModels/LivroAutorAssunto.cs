@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models.ViewModels
 {
@@ -6,6 +6,7 @@ namespace Library.Models.ViewModels
     {
         public Livro Livro { get; set; }
         public Autor Autor { get; set; }
+        [Display(Name="Gênero")]
         public Assunto Assunto { get; set; }
     }
 }
