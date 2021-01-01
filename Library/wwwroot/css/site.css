@@ -191,6 +191,47 @@ html {
         width: 100%;
     }
 
+    .link {
+        margin-top: 95%;
+    }
+
+    .link-sem-login {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .text-inicio div h6 {
+        margin-top: 40%;
+    }
+
+    .text-inicio div h1
+ {
+        margin: 15px 0 0 10px;
+    }
+
+    .text-inicio div h2 {
+       margin: -18px 0 0 22px;
+    }
+    .inicio {
+        max-height: 100vh;
+    }
+    
+    .login-cadastro {
+        justify-content: space-between;
+    }
+
+    .inicio {
+        background-image: url('../image/books.jpg');
+        background: linear-gradient(rgba(255, 255, 255, 0.384), rgba(255, 255, 255, 0.521)), url('../image/books.jpg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        min-width: 100%;
+        min-height: 100%;
+        height: 100vh;
+        position: fixed;
+        background-position: center;
+    }
 }
 
 .div-novo-livro {
