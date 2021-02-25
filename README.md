@@ -8,7 +8,8 @@
 
 </div>
 
-## Tecnologias
+<details>
+  <summary><strong> Tecnologias </strong></summary>
 
 * Front-end: HTML5, CSS3, Bootstrap, JavaScript
 
@@ -16,7 +17,10 @@
 
 *  Banco de Dados: SQL 
 
-## Projeto
+</details>
+
+<details>
+    <summary><strong> Projeto </strong></summary>
 
 Gerenciamento de livros pessoais
 
@@ -32,8 +36,11 @@ Gerenciamento de livros pessoais
 
 :white_check_mark: Seleção de livros por autores
 
+</details>
 
-## :sunrise_over_mountains: Imagens
+
+<details>
+      <summary><strong> :sunrise_over_mountains: Imagens </strong></summary>
 
 | Tela Inicial | Tela Inicial |
 | --- | --- |
@@ -54,3 +61,5 @@ Gerenciamento de livros pessoais
 | Novo Livro | |
 | --- | --- |
 | ![9](https://user-images.githubusercontent.com/69488783/103490732-9281a780-4dfc-11eb-9a69-f0db1fba0d08.png) | |
+
+</details>
