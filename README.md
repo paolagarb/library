@@ -9,7 +9,10 @@
 </div>
 
 <details>
+  
+  
   <summary><strong> Tecnologias </strong></summary>
+
 
 * Front-end: HTML5, CSS3, Bootstrap, JavaScript
 
@@ -20,7 +23,10 @@
 </details>
 
 <details>
+  
+  
     <summary><strong> Projeto </strong></summary>
+
 
 Gerenciamento de livros pessoais
 
@@ -40,7 +46,10 @@ Gerenciamento de livros pessoais
 
 
 <details>
+  
+  
       <summary><strong> :sunrise_over_mountains: Imagens </strong></summary>
+
 
 | Tela Inicial | Tela Inicial |
 | --- | --- |
