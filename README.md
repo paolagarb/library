@@ -24,8 +24,7 @@
 
 <details>
   
-  
-    <summary><strong> Projeto </strong></summary>
+<summary><strong> Projeto </strong></summary>
 
 
 Gerenciamento de livros pessoais
@@ -47,8 +46,7 @@ Gerenciamento de livros pessoais
 
 <details>
   
-  
-      <summary><strong> :sunrise_over_mountains: Imagens </strong></summary>
+<summary><strong> :sunrise_over_mountains: Imagens </strong></summary>
 
 
 | Tela Inicial | Tela Inicial |
